@@ -20,12 +20,26 @@ namespace APS_LostProperty.Controllers
         }
 
         // GET: LostItems
-        public async Task<IActionResult> Index()
-        {
-            var dBContext = _context.LostItem.Include(l => l.Category).Include(l => l.Location);
-            return View(await dBContext.ToListAsync());
-        }
 
+        public async Task<IActionResult> Index(string searchString)
+        {
+            // Start query including Category and Location
+            var lostItems = _context.LostItem
+                                .Include(lm => lm.Category)
+                                .Include(lm => lm.Location)
+                                .AsQueryable();
+
+            // Apply search filter if provided
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                lostItems = lostItems.Where(lm => lm.ItemName.ToLower().StartsWith(searchString.ToLower()));
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            // Execute the query
+            return View(await lostItems.ToListAsync());
+        }
         // GET: LostItems/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -23,11 +23,11 @@ namespace APS_LostProperty.Models
 
             public int CategoryID { get; set; }
             [ForeignKey("CategoryID")]
-            public Category Category { get; set; }
+            public Category? Category { get; set; }
 
             public int LocationID { get; set; }
             [ForeignKey("LocationID")]
-            public Location Location { get; set; }
+            public Location? Location { get; set; }
 
             public bool IsClaimed { get; set; } = false;
 
