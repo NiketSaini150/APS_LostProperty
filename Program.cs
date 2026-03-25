@@ -1,4 +1,12 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using APS_LostProperty.Areas.Identity.Data;
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("LostPropertyContextConnection") ?? throw new InvalidOperationException("Connection string 'LostPropertyContextConnection' not found.");;
+
+builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<DBContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -15,7 +23,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.MapRazorPages();
 app.UseAuthorization();
 
 app.MapStaticAssets();

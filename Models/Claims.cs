@@ -1,45 +1,46 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using APS_LostProperty.Areas.Identity.Data;
 
 namespace APS_LostProperty.Models
 {
-   
- 
-        public class Claim
-        {
-            public int ClaimID { get; set; }
+    public class Claim
+    {
+        public int ClaimID { get; set; }
 
-            public string UserID { get; set; }
-            [ForeignKey("UserID")]
-           // public ApplicationUser User { get; set; }
+        // FK to AspNetUsers.Id
+        public string UserID { get; set; }
 
-            [Required]
-            [StringLength(100)]
-            public string ItemName { get; set; }
+        [ForeignKey("UserID")]
+        public User IdentityUser { get; set; }
 
-            [StringLength(200)]
-            public string? Description { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string ItemName { get; set; }
 
-            [Required]
-            public DateTime DateLost { get; set; }
+        [StringLength(200)]
+        public string? Description { get; set; }
 
-            public DateTime DateSubmitted { get; set; } = DateTime.Now;
+        [Required]
+        public DateTime DateLost { get; set; }
 
-            public ClaimStatus Status { get; set; } = ClaimStatus.Submitted;
+        public DateTime DateSubmitted { get; set; } = DateTime.Now;
 
-            public int? MatchedLostItemID { get; set; }
-            [ForeignKey("MatchedLostItemID")]
-            public LostItem? MatchedLostItem { get; set; }
-        }
+        public ClaimStatus Status { get; set; } = ClaimStatus.Submitted;
 
-        public enum ClaimStatus
-        {
-            Submitted,
-            Approved,
-            Rejected,
-            Collected
-        }
+        public int? MatchedLostItemID { get; set; }
+
+        [ForeignKey("MatchedLostItemID")]
+        public LostItem? MatchedLostItem { get; set; }
     }
+
+    public enum ClaimStatus
+    {
+        Submitted,
+        Approved,
+        Rejected,
+        Collected
+    }
+}
 
