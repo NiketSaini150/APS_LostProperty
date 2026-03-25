@@ -13,7 +13,8 @@ namespace APS_LostProperty.Models
         public string UserID { get; set; }
 
         [ForeignKey("UserID")]
-        public User IdentityUser { get; set; }
+        public User? IdentityUser { get; set; }
+
 
         [Required]
         [StringLength(100)]
@@ -23,8 +24,10 @@ namespace APS_LostProperty.Models
         public string? Description { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public DateTime DateLost { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime DateSubmitted { get; set; } = DateTime.Now;
 
         public ClaimStatus Status { get; set; } = ClaimStatus.Submitted;
