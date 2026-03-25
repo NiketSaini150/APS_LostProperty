@@ -8,7 +8,7 @@ namespace APS_LostProperty.Models
 {
 
     public class LostItem
-        {
+        { 
             public int LostItemID { get; set; }
 
             [Required]
