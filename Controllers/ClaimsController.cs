@@ -20,10 +20,23 @@ namespace APS_LostProperty.Controllers
         }
 
         // GET: Claims
-        public async Task<IActionResult> Index()
+public async Task<IActionResult> Index(string searchString)
         {
-            var dBContext = _context.Claim.Include(c => c.IdentityUser).Include(c => c.MatchedLostItem);
+            var claims = from c in _context.Claim
+                            select c;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                // Convert both sides to lowercase for EF Core compatibility
+                claims = claims.Where(c => c.ItemName.ToLower().StartsWith(searchString.ToLower()));
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+       
+        
+        var dBContext = _context.Claim.Include(c => c.IdentityUser).Include(c => c.MatchedLostItem);
             return View(await dBContext.ToListAsync());
+
         }
 
         // GET: Claims/Details/5

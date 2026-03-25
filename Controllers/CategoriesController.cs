@@ -20,9 +20,19 @@ namespace APS_LostProperty.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Category.ToListAsync());
+            var categories = from c in _context.Category
+                            select c;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                // Convert both sides to lowercase for EF Core compatibility
+                categories = categories.Where(c => c.Name.ToLower().StartsWith(searchString.ToLower()));
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+            return View(await categories.ToListAsync());
         }
 
         // GET: Categories/Details/5
