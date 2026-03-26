@@ -16,10 +16,24 @@ public class DBContext : IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+ 
+
+       builder.Entity<Claim>()
+            .HasOne(c => c.MatchedLostItem)
+            .WithMany(l => l.Claims)
+            .HasForeignKey(c => c.MatchedLostItemID)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Claim>()
+            .HasOne(c => c.IdentityUser)
+            .WithMany(u => u.Claims)
+            .HasForeignKey(c => c.UserID)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
         // Customize the ASP.NET Identity model and override the defaults if needed.
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
-    }
+    
 
 public DbSet<APS_LostProperty.Models.LostItem> LostItem { get; set; } = default!;
 
