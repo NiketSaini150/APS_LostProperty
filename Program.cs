@@ -22,20 +22,8 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<DBContext>();
     var userManager = services.GetRequiredService<UserManager<User>>();
 
-    try
-    {
-        // Apply migrations
-        context.Database.Migrate();
 
-        // Call your DBInitializer
-        DBInilitizer.Initialize(context, userManager);
-
-        Console.WriteLine("Database seeded successfully!");
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Seeding failed: {ex.Message}");
-    }
+   
 }
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
