@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using APS_LostProperty.Areas.Identity.Data;
+using APS_LostProperty.Migrations;
+using APS_LostProperty.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using APS_LostProperty.Areas.Identity.Data;
-using APS_LostProperty.Models;
-using APS_LostProperty.Migrations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace APS_LostProperty.Controllers
 {
@@ -68,28 +69,35 @@ namespace APS_LostProperty.Controllers
             ViewData["MatchedLostItemID"] = new SelectList(_context.LostItem, "LostItemID", "ItemName");
             return View();
         }
-       
+
 
         // POST: Claims/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClaimID,UserID,ItemName,Description,DateLost,DateSubmitted,Status,MatchedLostItemID")] Claim claim)
+        public async Task<IActionResult> Create([Bind("ClaimID,ItemName,Description,DateLost,MatchedLostItemID")] APS_LostProperty.Models.Claim claim)
         {
-            claim.DateSubmitted = DateTime.Now;
-            ModelState.Remove("DateSubmited");
+            // Get logged in user ID
+            claim.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Set today's date
+            claim.DateSubmitted = DateTime.Today;
+
+            // Remove validation since we set it manually
+            ModelState.Remove("UserID");
+            ModelState.Remove("DateSubmitted");
+
             if (ModelState.IsValid)
             {
                 _context.Add(claim);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id", claim.UserID);
+
             ViewData["MatchedLostItemID"] = new SelectList(_context.LostItem, "LostItemID", "ItemName", claim.MatchedLostItemID);
             return View(claim);
         }
-
         // GET: Claims/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -113,7 +121,7 @@ namespace APS_LostProperty.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClaimID,ItemName,Description,DateLost,DateSubmitted,Status,MatchedLostItemID")] Claim claim)
+        public async Task<IActionResult> Edit(int id, [Bind("ClaimID,ItemName,Description,DateLost,MatchedLostItemID")] APS_LostProperty.Models.Claim claim)
         {
             if (id != claim.ClaimID)
             {
@@ -131,13 +139,16 @@ namespace APS_LostProperty.Controllers
                         return NotFound();
                     }
 
-                    // Update only editable fields
+                    // Update only allowed fields
                     existingClaim.ItemName = claim.ItemName;
                     existingClaim.Description = claim.Description;
                     existingClaim.DateLost = claim.DateLost;
-                    existingClaim.DateSubmitted = claim.DateSubmitted;
-                    existingClaim.Status = claim.Status;
                     existingClaim.MatchedLostItemID = claim.MatchedLostItemID;
+
+                    // DO NOT update:
+                    // existingClaim.UserID
+                    // existingClaim.DateSubmitted
+                    // existingClaim.Status (unless admin)
 
                     await _context.SaveChangesAsync();
                 }
