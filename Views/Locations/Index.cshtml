@@ -35,9 +35,9 @@
                     @Html.DisplayFor(modelItem => item.LocationName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.LocationID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.LocationID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.LocationID">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.LocationID" class="btn btn-light">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.LocationID" class="btn btn-light">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.LocationID" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }

@@ -14,9 +14,9 @@
     </div>
 </form>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -32,9 +32,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CategoryID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CategoryID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CategoryID">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.CategoryID" class="btn btn-light">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.CategoryID" class="btn btn-light">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CategoryID" class="btn btn-danger">Delete</a>
             </td>
         </tr>
 }

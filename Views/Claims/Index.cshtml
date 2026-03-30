@@ -13,9 +13,9 @@
     </div>
 </form>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -68,9 +68,9 @@
                 @Html.DisplayFor(modelItem => item.MatchedLostItem.ItemName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ClaimID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ClaimID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ClaimID">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ClaimID"class="btn btn-light">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ClaimID" class="btn btn-light">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ClaimID" class="btn btn-danger">Delete</a>
             </td>
         </tr>
 }
