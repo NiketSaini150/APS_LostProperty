@@ -45,9 +45,10 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdentityUser.Id)
-            </td>
+                
+                <td>
+                    @Html.DisplayFor(model => item.IdentityUser.Email)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ItemName)
             </td>

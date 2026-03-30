@@ -20,23 +20,24 @@ namespace APS_LostProperty.Controllers
         }
 
         // GET: Claims
-public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString)
         {
-            var claims = from c in _context.Claim
-                            select c;
+            // Start query
+            var claims = _context.Claim
+                .Include(c => c.IdentityUser)
+                .Include(c => c.MatchedLostItem)
+                .AsQueryable();
 
+            // Apply search if provided
             if (!string.IsNullOrEmpty(searchString))
             {
-                // Convert both sides to lowercase for EF Core compatibility
-                claims = claims.Where(c => c.ItemName.ToLower().StartsWith(searchString.ToLower()));
+                claims = claims.Where(c => c.IdentityUser.Email.ToLower().Contains(searchString.ToLower())
+                                        || c.IdentityUser.UserName.ToLower().Contains(searchString.ToLower()));
             }
 
             ViewData["CurrentFilter"] = searchString;
-       
-        
-        var dBContext = _context.Claim.Include(c => c.IdentityUser).Include(c => c.MatchedLostItem);
-            return View(await dBContext.ToListAsync());
 
+            return View(await claims.ToListAsync());
         }
 
         // GET: Claims/Details/5
@@ -62,10 +63,11 @@ public async Task<IActionResult> Index(string searchString)
         // GET: Claims/Create
         public IActionResult Create()
         {
-            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Email");
             ViewData["MatchedLostItemID"] = new SelectList(_context.LostItem, "LostItemID", "ItemName");
             return View();
         }
+       
 
         // POST: Claims/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
