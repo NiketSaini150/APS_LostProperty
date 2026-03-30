@@ -100,7 +100,7 @@ namespace APS_LostProperty.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id", claim.UserID);
+            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Email", claim.UserID);
             ViewData["MatchedLostItemID"] = new SelectList(_context.LostItem, "LostItemID", "ItemName", claim.MatchedLostItemID);
             return View(claim);
         }
