@@ -18,18 +18,21 @@ namespace APS_LostProperty.Models
 
         [Required]
         [MinLength(2, ErrorMessage = "Name must be at least 2 characters.")]
-        [RegularExpression("^[A-Za-z]+( [A-Za-z]+)*$", ErrorMessage = "Only letters and single spaces between words are allowed.")]
+        [RegularExpression("^[A-Za-z0-9'\\- ]+$", ErrorMessage = "Only letters, numbers, spaces, apostrophes, and dashes are allowed.")]
         public string ItemName { get; set; }
 
-        [MinLength(2, ErrorMessage = "Name must be at least 2 characters.")]
+        [MinLength(2, ErrorMessage = " Description must be at least 2 characters.")]
+        [RegularExpression(@"^[\w\s.,!?'""-]*$", ErrorMessage = "Description contains invalid characters.")]
         public string? Description { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
+        [CustomValidation(typeof(Claim), nameof(ValidateDateLost))]
         public DateTime DateLost { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime DateSubmitted { get; set; } = DateTime.Now;
+        [CustomValidation(typeof(Claim), nameof(ValidateDateSubmitted))]
+        public DateTime DateSubmitted { get; set; } = DateTime.Today;
 
         public ClaimStatus Status { get; set; } = ClaimStatus.Submitted;
 
@@ -37,8 +40,30 @@ namespace APS_LostProperty.Models
 
         [ForeignKey("MatchedLostItemID")]
         public LostItem? MatchedLostItem { get; set; }
-    }
 
+
+        public static ValidationResult ValidateDateLost(DateTime date, ValidationContext context)
+        {
+            var today = DateTime.Today;
+            var oneYearAgo = today.AddYears(-1);
+
+            if (date > today)
+                return new ValidationResult("Date lost cannot be in the future.");
+
+            if (date < oneYearAgo)
+                return new ValidationResult("Date lost cannot be more than 1 year ago.");
+
+            return ValidationResult.Success;
+        }
+
+        public static ValidationResult ValidateDateSubmitted(DateTime date, ValidationContext context)
+        {
+            if (date.Date == DateTime.Today)
+                return ValidationResult.Success;
+
+            return new ValidationResult("Date submitted must be today.");
+        }
+    }
     public enum ClaimStatus
     {
         Submitted,
@@ -46,5 +71,8 @@ namespace APS_LostProperty.Models
         Rejected,
         Collected
     }
+
+
 }
+
 

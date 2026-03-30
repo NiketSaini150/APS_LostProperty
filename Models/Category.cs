@@ -11,8 +11,8 @@ namespace APS_LostProperty.Models
             [Required]
             
         [Display(Name = "Category Name")]
-        [MinLength(2, ErrorMessage = "Name must be at least 2 characters.")]
-        [RegularExpression("^[A-Za-z]+( [A-Za-z]+)*$", ErrorMessage = "Only letters and single spaces between words are allowed.")]
+        [MinLength(2, ErrorMessage = " Category Name must be at least 2 characters.")]
+        [RegularExpression("^[A-Za-z0-9]+( [A-Za-z0-9]+)*$", ErrorMessage = "Only letters, numbers, and single spaces between words are allowed.")]
         public string Name { get; set; }
 
             // Navigation property

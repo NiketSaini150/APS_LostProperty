@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 namespace APS_LostProperty.Models
 
 {
@@ -9,8 +10,8 @@ namespace APS_LostProperty.Models
         public int LocationID { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 2, ErrorMessage = "Hall name must be between 2 and 30 characters.")]
-        [RegularExpression("^[A-Za-z]+( [A-Za-z]+)*$", ErrorMessage = "Only letters and single spaces between words are allowed.")]
+        [ MinLength (2,ErrorMessage = " Location name must be At least 2 Characters.")]
+        [RegularExpression("^[A-Za-z0-9'\\- ]+$", ErrorMessage = "Only letters, numbers, spaces, apostrophes, and dashes are allowed.")]
         public string LocationName { get; set; }
 
         // Navigation property
