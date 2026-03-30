@@ -20,7 +20,7 @@ namespace APS_LostProperty.Areas.Identity.Data
             {
                 return;   // DB has been seeded
             }
-            // ===== 1. Locations =====
+            // ===== 1. Category =====
             var categories = new Category[]
 {
     new Category { Name="Electronics"},
@@ -42,7 +42,11 @@ namespace APS_LostProperty.Areas.Identity.Data
     new Category { Name="ID Cards"},
     new Category { Name="Shoes"},
     new Category { Name="Hats"},
-    new Category { Name="Miscellaneous"}
+    new Category { Name="Miscellaneous"},
+    new Category { Name = "Electronics" },
+        new Category { Name = "Clothing" },
+        new Category { Name = "Bags" },
+        new Category { Name = "Books" }
 };
 
             foreach (Category c in categories)
@@ -51,7 +55,7 @@ namespace APS_LostProperty.Areas.Identity.Data
             }
             context.SaveChanges();
 
-            // ===== 2. Categories =====
+            // ===== 2. Location =====
             var locations = new Location[]
  {
     new Location { LocationName="Library"},
@@ -73,7 +77,12 @@ namespace APS_LostProperty.Areas.Identity.Data
     new Location { LocationName="Changing Rooms"},
     new Location { LocationName="Drama Studio"},
     new Location { LocationName="Outdoor Quad"},
-    new Location { LocationName="School Bus Area"}
+    new Location { LocationName="School Bus Area"},
+     new Location { LocationName = "Library" },
+        new Location { LocationName = "Cafeteria" },
+        new Location { LocationName = "Gym" },
+        new Location { LocationName = "Main Hall" },
+        new Location { LocationName = "Computer Lab" }
  };
 
             foreach (Location l in locations)
@@ -84,26 +93,21 @@ namespace APS_LostProperty.Areas.Identity.Data
 
             var lostItems = new LostItem[]
   {
-    new LostItem { ItemName="Black Backpack", Description="Nike backpack", DateFound=DateTime.Parse("2026-03-01"), CategoryID=4, LocationID=1 },
-    new LostItem { ItemName="Blue Jacket", Description="Adidas sports jacket", DateFound=DateTime.Parse("2026-03-02"), CategoryID=2, LocationID=2 },
-    new LostItem { ItemName="Calculator", Description="Casio scientific calculator", DateFound=DateTime.Parse("2026-03-03"), CategoryID=3, LocationID=4 },
-    new LostItem { ItemName="Football", Description="White training football", DateFound=DateTime.Parse("2026-03-03"), CategoryID=5, LocationID=9 },
-    new LostItem { ItemName="Silver Ring", Description="Small silver ring", DateFound=DateTime.Parse("2026-03-04"), CategoryID=6, LocationID=6 },
-    new LostItem { ItemName="Math Textbook", Description="Year 12 maths book", DateFound=DateTime.Parse("2026-03-05"), CategoryID=7, LocationID=1 },
-    new LostItem { ItemName="Metal Bottle", Description="Blue metal water bottle", DateFound=DateTime.Parse("2026-03-05"), CategoryID=8, LocationID=7 },
-    new LostItem { ItemName="Wireless Headphones", Description="Sony headphones", DateFound=DateTime.Parse("2026-03-06"), CategoryID=9, LocationID=1 },
-    new LostItem { ItemName="House Keys", Description="Three keys on ring", DateFound=DateTime.Parse("2026-03-06"), CategoryID=10, LocationID=13 },
-    new LostItem { ItemName="Reading Glasses", Description="Black frame glasses", DateFound=DateTime.Parse("2026-03-07"), CategoryID=11, LocationID=1 },
-    new LostItem { ItemName="Brown Wallet", Description="Leather wallet", DateFound=DateTime.Parse("2026-03-07"), CategoryID=12, LocationID=7 },
-    new LostItem { ItemName="Smart Phone", Description="Samsung phone", DateFound=DateTime.Parse("2026-03-08"), CategoryID=13, LocationID=8 },
-    new LostItem { ItemName="Laptop Charger", Description="Dell charger", DateFound=DateTime.Parse("2026-03-08"), CategoryID=14, LocationID=12 },
-    new LostItem { ItemName="Lunch Box", Description="Plastic lunch container", DateFound=DateTime.Parse("2026-03-09"), CategoryID=15, LocationID=7 },
-    new LostItem { ItemName="Black Umbrella", Description="Foldable umbrella", DateFound=DateTime.Parse("2026-03-09"), CategoryID=16, LocationID=16 },
-    new LostItem { ItemName="Student ID Card", Description="School ID card", DateFound=DateTime.Parse("2026-03-10"), CategoryID=17, LocationID=13 },
-    new LostItem { ItemName="Running Shoes", Description="White Nike shoes", DateFound=DateTime.Parse("2026-03-10"), CategoryID=18, LocationID=17 },
-    new LostItem { ItemName="Baseball Cap", Description="Black cap", DateFound=DateTime.Parse("2026-03-11"), CategoryID=19, LocationID=19 },
-    new LostItem { ItemName="Notebook", Description="Blue lined notebook", DateFound=DateTime.Parse("2026-03-11"), CategoryID=3, LocationID=4 },
-    new LostItem { ItemName="USB Drive", Description="16GB USB stick", DateFound=DateTime.Parse("2026-03-12"), CategoryID=1, LocationID=12 }
+
+
+
+        new LostItem { ItemName="Black Phone", DateFound=DateTime.Now.AddDays(-2), LocationID=locations[0].LocationID, CategoryID=categories[0].CategoryID },
+        new LostItem { ItemName="Blue Jacket", DateFound=DateTime.Now.AddDays(-5), LocationID=locations[0].LocationID, CategoryID=categories[1].CategoryID },
+        new LostItem { ItemName="Laptop Bag", DateFound=DateTime.Now.AddDays(-1), LocationID=locations[0].LocationID, CategoryID=categories[2].CategoryID },
+        new LostItem { ItemName="Math Textbook", DateFound=DateTime.Now.AddDays(-3), LocationID=locations[0].LocationID, CategoryID=categories[3].CategoryID },
+        new LostItem { ItemName="Red Scarf", DateFound=DateTime.Now.AddDays(-4), LocationID=locations[1].LocationID, CategoryID=categories[1].CategoryID },
+        new LostItem { ItemName="Water Bottle", DateFound=DateTime.Now.AddDays(-6), LocationID=locations[1].LocationID, CategoryID=categories[2].CategoryID },
+        new LostItem { ItemName="Gym Shoes", DateFound=DateTime.Now.AddDays(-2), LocationID=locations[2].LocationID, CategoryID=categories[1].CategoryID },
+        new LostItem { ItemName="Notebook", DateFound=DateTime.Now.AddDays(-3), LocationID=locations[2].LocationID, CategoryID=categories[3].CategoryID },
+        new LostItem { ItemName="Black Backpack", Description="Nike backpack", DateFound=DateTime.Parse("2026-03-01"), CategoryID=categories[3].CategoryID, LocationID=locations[0].LocationID },
+    new LostItem { ItemName="Blue Jacket", Description="Adidas sports jacket", DateFound=DateTime.Parse("2026-03-02"), CategoryID=categories[1].CategoryID, LocationID=locations[1].LocationID },
+    new LostItem { ItemName="Calculator", Description="Casio scientific calculator", DateFound=DateTime.Parse("2026-03-03"), CategoryID=categories[2].CategoryID, LocationID=locations[2].LocationID },
+    new LostItem { ItemName="Football", Description="White training football", DateFound=DateTime.Parse("2026-03-03"), CategoryID=categories[4].CategoryID, LocationID=locations[8].LocationID }
   };
 
             foreach (LostItem li in lostItems)
@@ -114,27 +118,13 @@ namespace APS_LostProperty.Areas.Identity.Data
 
             var claims = new Claim[]
 {
-    new Claim { UserID="user1", ItemName="Black Backpack", Description="Lost near library", DateLost=DateTime.Parse("2026-02-28"), Status=ClaimStatus.Submitted, MatchedLostItemID=1 },
-    new Claim { UserID="user1", ItemName="Blue Jacket", Description="Lost during sports", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Approved, MatchedLostItemID=2 },
-    new Claim { UserID="user1", ItemName="Calculator", Description="Left in math class", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Submitted, MatchedLostItemID=3 },
-    new Claim { UserID="user1", ItemName="Football", Description="Lost after practice", DateLost=DateTime.Parse("2026-03-02"), Status=ClaimStatus.Submitted, MatchedLostItemID=4 },
-    new Claim { UserID="user1", ItemName="Silver Ring", Description="Lost in hall", DateLost=DateTime.Parse("2026-03-03"), Status=ClaimStatus.Rejected, MatchedLostItemID=5 },
-    new Claim { UserID="user1", ItemName="Math Textbook", Description="Forgot in library", DateLost=DateTime.Parse("2026-03-03"), Status=ClaimStatus.Approved, MatchedLostItemID=6 },
-    new Claim { UserID="user1", ItemName="Metal Bottle", Description="Left in cafeteria", DateLost=DateTime.Parse("2026-03-04"), Status=ClaimStatus.Submitted, MatchedLostItemID=7 },
-    new Claim { UserID="user1", ItemName="Wireless Headphones", Description="Lost while studying", DateLost=DateTime.Parse("2026-03-05"), Status=ClaimStatus.Submitted, MatchedLostItemID=8 },
-    new Claim { UserID="user1", ItemName="House Keys", Description="Dropped outside office", DateLost=DateTime.Parse("2026-03-05"), Status=ClaimStatus.Collected, MatchedLostItemID=9 },
-    new Claim { UserID="user1", ItemName="Reading Glasses", Description="Lost in library", DateLost=DateTime.Parse("2026-03-06"), Status=ClaimStatus.Submitted, MatchedLostItemID=10 },
-    new Claim { UserID="user1", ItemName="Brown Wallet", Description="Left in cafeteria", DateLost=DateTime.Parse("2026-03-06"), Status=ClaimStatus.Submitted, MatchedLostItemID=11 },
-    new Claim { UserID="user1", ItemName="Smart Phone", Description="Lost during break", DateLost=DateTime.Parse("2026-03-07"), Status=ClaimStatus.Approved, MatchedLostItemID=12 },
-    new Claim { UserID="user1", ItemName="Laptop Charger", Description="Forgot in lab", DateLost=DateTime.Parse("2026-03-07"), Status=ClaimStatus.Submitted, MatchedLostItemID=13 },
-    new Claim { UserID="user1", ItemName="Lunch Box", Description="Left at lunch", DateLost=DateTime.Parse("2026-03-08"), Status=ClaimStatus.Submitted, MatchedLostItemID=14 },
-    new Claim { UserID="user1", ItemName="Black Umbrella", Description="Lost near bus area", DateLost=DateTime.Parse("2026-03-08"), Status=ClaimStatus.Rejected, MatchedLostItemID=15 },
-    new Claim { UserID="user1", ItemName="Student ID Card", Description="Dropped near office", DateLost=DateTime.Parse("2026-03-09"), Status=ClaimStatus.Submitted, MatchedLostItemID=16 },
-    new Claim { UserID="user1", ItemName="Running Shoes", Description="Lost in changing room", DateLost=DateTime.Parse("2026-03-09"), Status=ClaimStatus.Submitted, MatchedLostItemID=17 },
-    new Claim { UserID="user1", ItemName="Baseball Cap", Description="Lost in quad", DateLost=DateTime.Parse("2026-03-10"), Status=ClaimStatus.Approved, MatchedLostItemID=18 },
-    new Claim { UserID="user1", ItemName="Notebook", Description="Left in classroom", DateLost=DateTime.Parse("2026-03-10"), Status=ClaimStatus.Submitted, MatchedLostItemID=19 },
-    new Claim { UserID="user1", ItemName="USB Drive", Description="Lost in lab", DateLost=DateTime.Parse("2026-03-11"), Status=ClaimStatus.Submitted, MatchedLostItemID=20 }
+    new Claim { UserID="user1", ItemName="Black Backpack", Description="Lost near library", DateLost=DateTime.Parse("2026-02-28"), Status=ClaimStatus.Submitted, MatchedLostItemID=lostItems[0].LostItemID },
+    new Claim { UserID="user1", ItemName="Blue Jacket", Description="Lost during sports", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Approved, MatchedLostItemID=lostItems[1].LostItemID },
+    new Claim { UserID="user1", ItemName="Calculator", Description="Left in math class", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Submitted, MatchedLostItemID=lostItems[2].LostItemID },
+    new Claim { UserID="user1", ItemName="Football", Description="Lost after practice", DateLost=DateTime.Parse("2026-03-02"), Status=ClaimStatus.Submitted, MatchedLostItemID=lostItems[3].LostItemID }
+    // … more claims here
 };
+        
 
             foreach (Claim c in claims)
             {

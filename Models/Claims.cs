@@ -17,12 +17,11 @@ namespace APS_LostProperty.Models
 
 
         [Required]
-        [StringLength(100, MinimumLength = 2, ErrorMessage = "Hall name must be between 2 and 30 characters.")]
+        [MinLength(2, ErrorMessage = "Name must be at least 2 characters.")]
         [RegularExpression("^[A-Za-z]+( [A-Za-z]+)*$", ErrorMessage = "Only letters and single spaces between words are allowed.")]
         public string ItemName { get; set; }
 
-        [StringLength(200, MinimumLength = 2, ErrorMessage = "Hall name must be between 2 and 30 characters.")]
-      
+        [MinLength(2, ErrorMessage = "Name must be at least 2 characters.")]
         public string? Description { get; set; }
 
         [Required]

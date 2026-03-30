@@ -22,7 +22,7 @@ var app = builder.Build();
 //    var services = scope.ServiceProvider;
 //    var context = services.GetRequiredService<DBContext>();
 //    var userManager = services.GetRequiredService<UserManager<User>>();
-
+ 
 
 
 //}
