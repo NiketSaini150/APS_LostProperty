@@ -11,4 +11,5 @@
 FROM LostItem AS LI
 JOIN Location AS L ON LI.LocationID = L.LocationID
 JOIN Category AS C ON LI.CategoryID = C.CategoryID
-WHERE LI.IsClaimed = 0;
+WHERE LI.IsClaimed = 0
+;

@@ -12,8 +12,9 @@ namespace APS_LostProperty.Models
             public int LostItemID { get; set; }
 
             [Required]
-            [StringLength(100)]
-            public string ItemName { get; set; }
+            [StringLength(100, MinimumLength = 2, ErrorMessage = "Hall name must be between 2 and 30 characters.")]
+        [RegularExpression("^[A-Za-z]+( [A-Za-z]+)*$", ErrorMessage = "Only letters and single spaces between words are allowed.")]
+        public string ItemName { get; set; }
 
             [StringLength(200)]
             public string? Description { get; set; }

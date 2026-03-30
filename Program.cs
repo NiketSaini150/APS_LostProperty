@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using APS_LostProperty.Areas.Identity.Data;
+using APS_LostProperty.Migrations;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("LostPropertyContextConnection") ?? throw new InvalidOperationException("Connection string 'LostPropertyContextConnection' not found.");;
 
@@ -15,15 +16,33 @@ var app = builder.Build();
 
 
 
-// ===== Seed Database =====
+//// ===== Seed Database =====
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    var context = services.GetRequiredService<DBContext>();
+//    var userManager = services.GetRequiredService<UserManager<User>>();
+
+
+
+//}
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<DBContext>();
-    var userManager = services.GetRequiredService<UserManager<User>>();
 
+    try
+    {
+        var context = services.GetRequiredService<DBContext>();
+        var userManager = services.GetRequiredService<UserManager<User>>();
 
-   
+        DBInilitizer.Initialize(context, userManager);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred creating or seeding the DB.");
+    }
 }
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
