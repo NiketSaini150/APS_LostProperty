@@ -132,6 +132,7 @@ namespace APS_LostProperty.Areas.Identity.Data
 
             var claims = new Claim[]
 {
+    //changed user id ="user1" to user id= user.id so that it gets the id of the user 
     new Claim { UserID= user.Id, ItemName="Black Backpack", Description="Lost near library", DateLost=DateTime.Parse("2026-02-28"), Status=ClaimStatus.Submitted, MatchedLostItemID=lostItems[0].LostItemID },
     new Claim { UserID=user.Id, ItemName="Blue Jacket", Description="Lost during sports", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Approved, MatchedLostItemID=lostItems[1].LostItemID },
     new Claim { UserID=user.Id, ItemName="Calculator", Description="Left in math class", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Submitted, MatchedLostItemID=lostItems[2].LostItemID },
