@@ -31,7 +31,7 @@ namespace APS_LostProperty.Models
         public DateTime DateLost { get; set; }
 
         [DataType(DataType.Date)]
-        [CustomValidation(typeof(Claim), nameof(ValidateDateSubmitted))]
+
         public DateTime DateSubmitted { get; set; } = DateTime.Today;
 
         public ClaimStatus Status { get; set; } = ClaimStatus.Submitted;
@@ -56,13 +56,7 @@ namespace APS_LostProperty.Models
             return ValidationResult.Success;
         }
 
-        public static ValidationResult ValidateDateSubmitted(DateTime date, ValidationContext context)
-        {
-            if (date.Date == DateTime.Today)
-                return ValidationResult.Success;
 
-            return new ValidationResult("Date submitted must be today.");
-        }
     }
     public enum ClaimStatus
     {

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using APS_LostProperty.Areas.Identity.Data;
 using APS_LostProperty.Models;
+using APS_LostProperty.Migrations;
 
 namespace APS_LostProperty.Controllers
 {
@@ -76,6 +77,8 @@ namespace APS_LostProperty.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ClaimID,UserID,ItemName,Description,DateLost,DateSubmitted,Status,MatchedLostItemID")] Claim claim)
         {
+            claim.DateSubmitted = DateTime.Now;
+            ModelState.Remove("DateSubmited");
             if (ModelState.IsValid)
             {
                 _context.Add(claim);
@@ -110,7 +113,7 @@ namespace APS_LostProperty.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClaimID,UserID,ItemName,Description,DateLost,DateSubmitted,Status,MatchedLostItemID")] Claim claim)
+        public async Task<IActionResult> Edit(int id, [Bind("ClaimID,ItemName,Description,DateLost,DateSubmitted,Status,MatchedLostItemID")] Claim claim)
         {
             if (id != claim.ClaimID)
             {
@@ -121,7 +124,21 @@ namespace APS_LostProperty.Controllers
             {
                 try
                 {
-                    _context.Update(claim);
+                    var existingClaim = await _context.Claim.FindAsync(id);
+
+                    if (existingClaim == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Update only editable fields
+                    existingClaim.ItemName = claim.ItemName;
+                    existingClaim.Description = claim.Description;
+                    existingClaim.DateLost = claim.DateLost;
+                    existingClaim.DateSubmitted = claim.DateSubmitted;
+                    existingClaim.Status = claim.Status;
+                    existingClaim.MatchedLostItemID = claim.MatchedLostItemID;
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -135,13 +152,14 @@ namespace APS_LostProperty.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id", claim.UserID);
+
             ViewData["MatchedLostItemID"] = new SelectList(_context.LostItem, "LostItemID", "ItemName", claim.MatchedLostItemID);
+
             return View(claim);
         }
-
         // GET: Claims/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
