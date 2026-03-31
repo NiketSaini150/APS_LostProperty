@@ -6,11 +6,17 @@ using APS_LostProperty.Areas.Identity.Data;
 
 namespace APS_LostProperty.Areas.Identity.Data
 {
+    // This class is responsible for seeding initial data into the database
+    // It runs when the application starts and ensures the database contains
+    // default users, categories, locations, lost items, and claims.
     public static class DBInilitizer
     {
 
+        // This method initializes and seeds the database
+        // It creates the database if it does not exist and inserts default data
         public static void Initialize(DBContext context, UserManager<User> userManager)
         {
+            // Ensures the database is created if it does not already exist
             context.Database.EnsureCreated();
             // Make sure the database exists
             //  context.Database.Migrate();
@@ -21,6 +27,8 @@ namespace APS_LostProperty.Areas.Identity.Data
             //    return;   // DB has been seeded
             //}
 
+            // Finds a test user by email
+            // If the user does not exist, it will be created
             var user = userManager.FindByEmailAsync("user1@test.com").Result;
 
             if (user == null)
@@ -32,9 +40,12 @@ namespace APS_LostProperty.Areas.Identity.Data
                     EmailConfirmed = true
                 };
 
+                // Creates the default test user with a password
                 userManager.CreateAsync(user, "Password123!").Wait();
             }
+
             // ===== 1. Category =====
+            // This section seeds the database with default item categories
             var categories = new Category[]
 {
     new Category { Name="Electronics"},
@@ -63,6 +74,7 @@ namespace APS_LostProperty.Areas.Identity.Data
         new Category { Name = "Books" }
 };
 
+            // Adds each category to the database
             foreach (Category c in categories)
             {
                 context.Category.Add(c);
@@ -70,6 +82,7 @@ namespace APS_LostProperty.Areas.Identity.Data
             context.SaveChanges();
 
             // ===== 2. Location =====
+            // This section seeds the database with locations where items may be found
             var locations = new Location[]
  {
     new Location { LocationName="Library"},
@@ -99,12 +112,15 @@ namespace APS_LostProperty.Areas.Identity.Data
         new Location { LocationName = "Computer Lab" }
  };
 
+            // Adds each location to the database
             foreach (Location l in locations)
             {
                 context.Location.Add(l);
             }
             context.SaveChanges();
 
+            // ===== 3. Lost Items =====
+            // This section seeds the database with example lost items
             var lostItems = new LostItem[]
   {
 
@@ -124,12 +140,15 @@ namespace APS_LostProperty.Areas.Identity.Data
     new LostItem { ItemName="Football", Description="White training football", DateFound=DateTime.Parse("2026-03-03"), CategoryID=categories[4].CategoryID, LocationID=locations[8].LocationID }
   };
 
+            // Adds all lost items to the database
             foreach (LostItem li in lostItems)
             {
                 context.LostItem.Add(li);
             }
             context.SaveChanges();
 
+            // ===== 4. Claims =====
+            // This section seeds example claims submitted by users
             var claims = new Claim[]
 {
     //changed user id ="user1" to user id= user.id so that it gets the id of the user 
@@ -139,8 +158,9 @@ namespace APS_LostProperty.Areas.Identity.Data
     new Claim { UserID=user.Id, ItemName="Football", Description="Lost after practice", DateLost=DateTime.Parse("2026-03-02"), Status=ClaimStatus.Submitted, MatchedLostItemID=lostItems[3].LostItemID }
     // … more claims here
 };
-        
 
+
+            // Adds all claims to the database
             foreach (Claim c in claims)
             {
                 context.Claim.Add(c);
@@ -150,4 +170,4 @@ namespace APS_LostProperty.Areas.Identity.Data
 
         }
     }
-    }
+}
