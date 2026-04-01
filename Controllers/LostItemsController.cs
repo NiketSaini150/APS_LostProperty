@@ -125,8 +125,19 @@ namespace APS_LostProperty.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryID"] = new SelectList(_context.Set<Category>(), "CategoryID", "Name", lostItem.CategoryID);
-            ViewData["LocationID"] = new SelectList(_context.Set<Location>(), "LocationID", "LocationName", lostItem.LocationID);
+            ViewData["CategoryID"] = new SelectList(
+                _context.Set<Category>().OrderBy(c => c.Name),
+                "CategoryID",
+                "Name",
+                lostItem.CategoryID
+            );
+
+            ViewData["LocationID"] = new SelectList(
+                _context.Set<Location>().OrderBy(l => l.LocationName),
+                "LocationID",
+                "LocationName",
+                lostItem.LocationID
+            );
             return View(lostItem);
         }
 
@@ -162,8 +173,19 @@ namespace APS_LostProperty.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryID"] = new SelectList(_context.Set<Category>(), "CategoryID", "Name", lostItem.CategoryID);
-            ViewData["LocationID"] = new SelectList(_context.Set<Location>(), "LocationID", "LocationName", lostItem.LocationID);
+            ViewData["CategoryID"] = new SelectList(
+               _context.Set<Category>().OrderBy(c => c.Name),
+               "CategoryID",
+               "Name",
+               lostItem.CategoryID
+           );
+
+            ViewData["LocationID"] = new SelectList(
+                _context.Set<Location>().OrderBy(l => l.LocationName),
+                "LocationID",
+                "LocationName",
+                lostItem.LocationID
+            );
             return View(lostItem);
         }
 

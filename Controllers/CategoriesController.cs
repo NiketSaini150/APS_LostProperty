@@ -30,6 +30,7 @@ namespace APS_LostProperty.Controllers
                 // Convert both sides to lowercase for EF Core compatibility
                 categories = categories.Where(c => c.Name.ToLower().StartsWith(searchString.ToLower()));
             }
+            categories = categories.OrderBy(c => c.Name);
 
             ViewData["CurrentFilter"] = searchString;
             return View(await categories.ToListAsync());

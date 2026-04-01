@@ -31,6 +31,7 @@ namespace APS_LostProperty.Controllers
                 // Convert both sides to lowercase for EF Core compatibility
                 locations = locations.Where(l => l.LocationName.ToLower().StartsWith(searchString.ToLower()));
             }
+            locations = locations.OrderBy(l => l.LocationName);
 
             ViewData["CurrentFilter"] = searchString;
             return View(await locations.ToListAsync());
@@ -68,10 +69,12 @@ namespace APS_LostProperty.Controllers
         {
             if (ModelState.IsValid)
             {
+               
                 _context.Add(location);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+   
             return View(location);
         }
 
