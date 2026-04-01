@@ -35,6 +35,8 @@ namespace APS_LostProperty.Controllers
                 lostItems = lostItems.Where(lm => lm.ItemName.ToLower().StartsWith(searchString.ToLower()));
             }
 
+            lostItems = lostItems.OrderBy(lm => lm.ItemName);
+
             ViewData["CurrentFilter"] = searchString;
 
             // Execute the query
@@ -47,6 +49,7 @@ namespace APS_LostProperty.Controllers
             {
                 return NotFound();
             }
+
 
             var lostItem = await _context.LostItem
                 .Include(l => l.Category)
@@ -63,8 +66,18 @@ namespace APS_LostProperty.Controllers
         // GET: LostItems/Create
         public IActionResult Create()
         {
-            ViewData["CategoryID"] = new SelectList(_context.Set<Category>(), "CategoryID", "Name");
-            ViewData["LocationID"] = new SelectList(_context.Set<Location>(), "LocationID", "LocationName");
+            ViewData["CategoryID"] = new SelectList(
+                _context.Set<Category>().OrderBy(c => c.Name),
+                "CategoryID",
+                "Name"
+            );
+
+            ViewData["LocationID"] = new SelectList(
+                _context.Set<Location>().OrderBy(l => l.LocationName),
+                "LocationID",
+                "LocationName"
+            );
+
             return View();
         }
 
@@ -81,8 +94,21 @@ namespace APS_LostProperty.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryID"] = new SelectList(_context.Set<Category>(), "CategoryID", "Name", lostItem.CategoryID);
-            ViewData["LocationID"] = new SelectList(_context.Set<Location>(), "LocationID", "LocationName", lostItem.LocationID);
+
+            ViewData["CategoryID"] = new SelectList(
+                _context.Set<Category>().OrderBy(c => c.Name),
+                "CategoryID",
+                "Name",
+                lostItem.CategoryID
+            );
+
+            ViewData["LocationID"] = new SelectList(
+                _context.Set<Location>().OrderBy(l => l.LocationName),
+                "LocationID",
+                "LocationName",
+                lostItem.LocationID
+            );
+
             return View(lostItem);
         }
 
