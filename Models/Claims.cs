@@ -37,9 +37,7 @@ namespace APS_LostProperty.Models
         [RegularExpression("^[A-Za-z0-9'\\- ]+$", ErrorMessage = "Only letters, numbers, spaces, apostrophes, and dashes are allowed.")]
         public string ItemName { get; set; }
 
-        // Optional description provided by the user
-        // Helps staff verify if the claim matches the lost item
-        [MinLength(2, ErrorMessage = " Description must be at least 2 characters.")]
+    
 
         // Regex validation allowing words, spaces, punctuation, and common symbols
         // Prevents unsafe or unexpected characters
@@ -55,7 +53,7 @@ namespace APS_LostProperty.Models
 
         // Custom validation method used to check if the date is valid
         // Prevents future dates and dates older than one year
-        [CustomValidation(typeof(Claim), nameof(ValidateDateLost))]
+        
         public DateTime DateLost { get; set; }
 
         // Date the claim was submitted to the system
@@ -83,19 +81,7 @@ namespace APS_LostProperty.Models
         // This method checks that:
         // 1. The date cannot be in the future
         // 2. The date cannot be more than 1 year old
-        public static ValidationResult ValidateDateLost(DateTime date, ValidationContext context)
-        {
-            var today = DateTime.Today;
-            var oneYearAgo = today.AddYears(-1);
-
-            if (date > today)
-                return new ValidationResult("Date lost cannot be in the future.");
-
-            if (date < oneYearAgo)
-                return new ValidationResult("Date lost cannot be more than 1 year ago.");
-
-            return ValidationResult.Success;
-        }
+       
 
 
     }
