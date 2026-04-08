@@ -45,7 +45,25 @@ public class DBContext : IdentityDbContext<User>
             .WithMany(u => u.Claims)
             .HasForeignKey(c => c.UserID)
             .OnDelete(DeleteBehavior.Cascade);
+
+
+        builder.Entity<LostItem>()
+            .HasOne(l => l.Location)
+            .WithMany(l => l.LostItems)
+            .HasForeignKey(l => l.LocationID)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<LostItem>()
+            .HasOne(l => l.Category)
+            .WithMany(c => c.LostItems)
+            .HasForeignKey(l => l.CategoryID)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        
     }
+    
+
+    
 
     // Customize the ASP.NET Identity model and override the defaults if needed.
     // For example, you can rename the ASP.NET Identity table names and more.
