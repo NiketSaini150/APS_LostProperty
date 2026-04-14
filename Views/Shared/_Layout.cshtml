@@ -11,12 +11,15 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color:#1e1e1e; border-bottom:1px solid #2a2a2a;">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    APS_LostProperty
+
+                <!-- Brand -->
+                <a class="navbar-brand fw-bold text-light" asp-area="" asp-controller="Home" asp-action="Index">
+                    APS Lost Property
                 </a>
 
+                <!-- Mobile toggle -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent"
                         aria-controls="navbarSupportedContent"
@@ -25,51 +28,57 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+                <!-- Links -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                         <li class="nav-item">
-                            <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-light" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Categories" asp-action="Index">Category</a>
+                            <a class="nav-link text-light" asp-controller="Categories" asp-action="Index">Categories</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Locations" asp-action="Index">Locations</a>
+                            <a class="nav-link text-light" asp-controller="Locations" asp-action="Index">Locations</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="LostItems" asp-action="Index">LostItems</a>
+                            <a class="nav-link text-light" asp-controller="LostItems" asp-action="Index">Lost Items</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Claims" asp-action="Index">Claims</a>
+                            <a class="nav-link text-light" asp-controller="Claims" asp-action="Index">Claims</a>
                         </li>
 
-                        <!-- Optional dropdown example -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button"
-                               data-bs-toggle="dropdown">
-                                More
+                        <li class="nav-item">
+                            <a class="nav-link text-light fw-semibold" style="opacity:0.9;" asp-controller="Admin" asp-action="Index">
+                                Admin
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                            </ul>
                         </li>
 
                     </ul>
 
-                    <!-- Optional search -->
-                    <form class="d-flex me-3" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" />
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    <!-- Search (optional but styled) -->
+                    <form class="d-flex" role="search" method="get" asp-controller="LostItems" asp-action="Index">
+                        <input class="form-control form-control-sm me-2"
+                               type="search"
+                               name="searchString"
+                               placeholder="Search items..."
+                               style="background-color:#2a2a2a; border:1px solid #3a3a3a; color:white;" />
+
+                        <button class="btn btn-sm btn-outline-light" type="submit">
+                            Search
+                        </button>
                     </form>
 
-                    <!-- Login partial -->
-                    <partial name="_LoginPartial" />
+                    <!-- Login -->
+                    <div class="ms-3">
+                        <partial name="_LoginPartial" />
+                    </div>
+
                 </div>
             </div>
         </nav>

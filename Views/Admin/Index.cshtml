@@ -1,0 +1,209 @@
+﻿@{
+    ViewData["Title"] = "Admin SQL Query Panel";
+
+    var queries = ViewBag.Queries;
+    var table = ViewBag.ResultTable as System.Data.DataTable;
+}
+
+<style>
+    body {
+        background-color: #0f172a;
+        color: #e5e7eb;
+    }
+
+    .admin-container {
+        max-width: 1400px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #38bdf8;
+        margin-bottom: 20px;
+    }
+
+    /* layout */
+    .layout {
+        display: flex;
+        gap: 20px;
+    }
+
+    /* LEFT SIDE (smaller now) */
+    .left-panel {
+        width: 35%;
+    }
+
+    /* RIGHT SIDE (bigger results) */
+    .right-panel {
+        width: 65%;
+    }
+
+    /* QUERY CARD (smaller + cleaner) */
+    .card-dark {
+        background-color: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 12px;
+    }
+
+    /* GREEN QUERY HEADER */
+    .query-header {
+        background-color: #16a34a;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .card-dark p {
+        color: #e5e7eb;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .btn-run {
+        background-color: #38bdf8;
+        border: none;
+        color: #0f172a;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 5px 10px;
+    }
+
+        .btn-run:hover {
+            background-color: #0ea5e9;
+        }
+
+    /* RESULTS BIGGER */
+    .table-box {
+        max-height: 750px; /* BIGGER RESULT BOX */
+        overflow-y: auto;
+        border-radius: 12px;
+        border: 1px solid #334155;
+        background-color: #1e293b;
+        padding: 10px;
+    }
+
+    .result-title {
+        color: #34d399;
+        margin-bottom: 10px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    table {
+        color: white;
+        font-size: 14px;
+    }
+
+    thead {
+        background-color: #334155;
+        position: sticky;
+        top: 0;
+    }
+
+    td, th {
+        white-space: nowrap;
+    }
+
+    /* MOBILE */
+    @@media (max-width: 900px) {
+        .layout {
+            flex-direction: column;
+        }
+
+        .left-panel,
+        .right-panel {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="admin-container">
+
+    <div class="title">Admin SQL Query Panel</div>
+
+    <div class="layout">
+
+        <!-- LEFT -->
+        <div class="left-panel">
+
+            @foreach (var q in queries)
+            {
+                <div class="card-dark">
+
+                    <!-- GREEN QUERY LABEL -->
+                    <div class="query-header">
+                        QUERY
+                    </div>
+
+                    <p><strong style="color:white;">@q.Name</strong></p>
+
+                    <p>@q.Description</p>
+
+                    <form method="post" asp-action="RunQuery">
+                        <input type="hidden" name="sql" value="@q.Sql" />
+
+                        <button class="btn btn-run">
+                            Run
+                        </button>
+                    </form>
+
+                </div>
+            }
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="right-panel">
+
+            @if (table != null)
+            {
+                <div class="result-title">Results</div>
+
+                <div class="table-box">
+
+                    <table class="table table-dark table-striped table-hover">
+
+                        <thead>
+                            <tr>
+                                @foreach (System.Data.DataColumn col in table.Columns)
+                                {
+                                    <th>@col.ColumnName</th>
+                                }
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (System.Data.DataRow row in table.Rows)
+                            {
+                                <tr>
+                                    @foreach (var item in row.ItemArray)
+                                    {
+                                        <td>@item</td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="card-dark">
+                    <h5>No Results Yet</h5>
+                    <p>Run a query on the left to see results here.</p>
+                </div>
+            }
+
+        </div>
+
+    </div>
+</div>
