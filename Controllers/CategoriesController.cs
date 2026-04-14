@@ -20,22 +20,58 @@ namespace APS_LostProperty.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, int page = 1)
         {
-            var categories = from c in _context.Category
-                            select c;
+            // number of categories per page
+            int pageSize = 5;
 
+            // start query from Category table
+            var categoriesQuery = _context.Category.AsQueryable();
+
+            // ---------------- SEARCH ----------------
+
+            // check if user typed anything in search bar
             if (!string.IsNullOrEmpty(searchString))
             {
-                // Convert both sides to lowercase for EF Core compatibility
-                categories = categories.Where(c => c.Name.ToLower().StartsWith(searchString.ToLower()));
+                // make search lowercase so it ignores case sensitivity
+                var search = searchString.ToLower();
+
+                // filter categories by name
+                categoriesQuery = categoriesQuery.Where(c =>
+                    c.Name != null &&                      // make sure name exists
+                    c.Name.ToLower().Contains(search)      // check if it contains search text
+                );
             }
-            categories = categories.OrderBy(c => c.Name);
 
+          
+            // sort results so better matches appear first
+            categoriesQuery = categoriesQuery
+                .OrderBy(c =>
+                    c.Name.StartsWith(searchString) ? 0 : 1 // exact/starting matches first
+                )
+                .ThenBy(c => c.Name); // then alphabetical order
+
+            // ---------------- PAGINATION ----------------
+
+            // count total categories after filtering
+            var totalItems = await categoriesQuery.CountAsync();
+
+            // calculate total pages needed
+            var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+            // get only items for current page
+            var categories = await categoriesQuery
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // send values to view
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
             ViewData["CurrentFilter"] = searchString;
-            return View(await categories.ToListAsync());
-        }
 
+            return View(categories);
+        }
         // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
