@@ -45,6 +45,8 @@ namespace APS_LostProperty.Controllers
                     ));
             }
 
+            claims = claims.OrderBy(c => c.ItemName);
+
             ViewData["CurrentFilter"] = searchString;
 
             return View(await claims.ToListAsync());
@@ -173,8 +175,13 @@ namespace APS_LostProperty.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["MatchedLostItemID"] =
-                new SelectList(_context.LostItem, "LostItemID", "ItemName", claim.MatchedLostItemID);
+        
+             ViewData["MatchedLostItemID"] = new SelectList(
+    _context.LostItem.OrderBy(l => l.ItemName),
+    "LostItemID",
+    "ItemName",
+    claim.MatchedLostItemID
+);
 
             return View(claim);
         }

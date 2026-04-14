@@ -3,32 +3,27 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using APS_LostProperty.Areas.Identity.Data;
 
-
 namespace APS_LostProperty.Areas.Identity.Data
 {
-    // This class is responsible for seeding initial data into the database
-    // It runs when the application starts and ensures the database contains
-    // default users, categories, locations, lost items, and claims.
+    // This class runs when the app starts and fills the database with initial test data
     public static class DBInilitizer
     {
-
-        // This method initializes and seeds the database
-        // It creates the database if it does not exist and inserts default data
-        public static void Initialize(DBContext context, UserManager<User> userManager)
+        public static void Initialize(DBContext context, UserManager<User> userManager /*, RoleManager<IdentityRole> roleManager */)
         {
-            // Ensures the database is created if it does not already exist
+            // makes sure database exists before doing anything
             context.Database.EnsureCreated();
-            // Make sure the database exists
-            //  context.Database.Migrate();
 
-            // Look for any products.
-            //if (context.Category.Any())
-            //{
-            //    return;   // DB has been seeded
-            //}
+            // ---------------- ROLE SETUP (COMMENTED OUT FOR NOW) ----------------
+            /*
+            if (!roleManager.RoleExistsAsync("Staff").Result)
+                roleManager.CreateAsync(new IdentityRole("Staff")).Wait();
 
-            // Finds a test user by email
-            // If the user does not exist, it will be created
+            if (!roleManager.RoleExistsAsync("Student").Result)
+                roleManager.CreateAsync(new IdentityRole("Student")).Wait();
+            */
+            // -------------------------------------------------------------------
+
+            // creates a default test user if it doesn't already exist
             var user = userManager.FindByEmailAsync("user1@test.com").Result;
 
             if (user == null)
@@ -40,134 +35,130 @@ namespace APS_LostProperty.Areas.Identity.Data
                     EmailConfirmed = true
                 };
 
-                // Creates the default test user with a password
                 userManager.CreateAsync(user, "Password123!").Wait();
             }
 
-            // ===== 1. Category =====
-            // This section seeds the database with default item categories
-            var categories = new Category[]
-{
-    new Category { Name="Electronics"},
-    new Category { Name="Clothing"},
-    new Category { Name="Stationery"},
-    new Category { Name="Bags"},
-    new Category { Name="Sports Gear"},
-    new Category { Name="Jewellery"},
-    new Category { Name="Books"},
-    new Category { Name="Water Bottles"},
-    new Category { Name="Headphones"},
-    new Category { Name="Keys"},
-    new Category { Name="Glasses"},
-    new Category { Name="Wallets"},
-    new Category { Name="Phones"},
-    new Category { Name="Chargers"},
-    new Category { Name="Lunch Boxes"},
-    new Category { Name="Umbrellas"},
-    new Category { Name="ID Cards"},
-    new Category { Name="Shoes"},
-    new Category { Name="Hats"},
-    new Category { Name="Miscellaneous"},
-    new Category { Name = "Electronics" },
-        new Category { Name = "Clothing" },
-        new Category { Name = "Bags" },
-        new Category { Name = "Books" }
-};
-
-            // Adds each category to the database
-            foreach (Category c in categories)
+            // ================= CATEGORY SEEDING =================
+            // only runs if categories table is empty
+            if (!context.Category.Any())
             {
-                context.Category.Add(c);
+                var categories = new Category[]
+                {
+                    new Category { Name="Electronics"},
+                    new Category { Name="Clothing"},
+                    new Category { Name="Stationery"},
+                    new Category { Name="Bags"},
+                    new Category { Name="Sports Gear"},
+                    new Category { Name="Jewellery"},
+                    new Category { Name="Books"},
+                    new Category { Name="Water Bottles"},
+                    new Category { Name="Headphones"},
+                    new Category { Name="Keys"},
+                    new Category { Name="Glasses"},
+                    new Category { Name="Wallets"},
+                    new Category { Name="Phones"},
+                    new Category { Name="Chargers"},
+                    new Category { Name="Lunch Boxes"},
+                    new Category { Name="Umbrellas"},
+                    new Category { Name="ID Cards"},
+                    new Category { Name="Shoes"},
+                    new Category { Name="Hats"},
+                    new Category { Name="Miscellaneous"}
+                };
+
+                // adds all categories into DB
+                foreach (Category c in categories)
+                {
+                    context.Category.Add(c);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
-            // ===== 2. Location =====
-            // This section seeds the database with locations where items may be found
-            var locations = new Location[]
- {
-    new Location { LocationName="Library"},
-    new Location { LocationName="Gym"},
-    new Location { LocationName="Science Block"},
-    new Location { LocationName="Math Block"},
-    new Location { LocationName="English Block"},
-    new Location { LocationName="Hall"},
-    new Location { LocationName="Cafeteria"},
-    new Location { LocationName="Basketball Court"},
-    new Location { LocationName="Football Field"},
-    new Location { LocationName="Music Room"},
-    new Location { LocationName="Art Room"},
-    new Location { LocationName="Computer Lab"},
-    new Location { LocationName="Front Office"},
-    new Location { LocationName="Student Services"},
-    new Location { LocationName="Staff Room"},
-    new Location { LocationName="Parking Area"},
-    new Location { LocationName="Changing Rooms"},
-    new Location { LocationName="Drama Studio"},
-    new Location { LocationName="Outdoor Quad"},
-    new Location { LocationName="School Bus Area"},
-     new Location { LocationName = "Library" },
-        new Location { LocationName = "Cafeteria" },
-        new Location { LocationName = "Gym" },
-        new Location { LocationName = "Main Hall" },
-        new Location { LocationName = "Computer Lab" }
- };
-
-            // Adds each location to the database
-            foreach (Location l in locations)
+            // ================= LOCATION SEEDING =================
+            if (!context.Location.Any())
             {
-                context.Location.Add(l);
+                var locations = new Location[]
+                {
+                    new Location { LocationName="Library"},
+                    new Location { LocationName="Gym"},
+                    new Location { LocationName="Science Block"},
+                    new Location { LocationName="Math Block"},
+                    new Location { LocationName="English Block"},
+                    new Location { LocationName="Hall"},
+                    new Location { LocationName="Cafeteria"},
+                    new Location { LocationName="Basketball Court"},
+                    new Location { LocationName="Football Field"},
+                    new Location { LocationName="Music Room"},
+                    new Location { LocationName="Art Room"},
+                    new Location { LocationName="Computer Lab"},
+                    new Location { LocationName="Front Office"},
+                    new Location { LocationName="Student Services"},
+                    new Location { LocationName="Staff Room"},
+                    new Location { LocationName="Parking Area"},
+                    new Location { LocationName="Changing Rooms"},
+                    new Location { LocationName="Drama Studio"},
+                    new Location { LocationName="Outdoor Quad"},
+                    new Location { LocationName="School Bus Area"}
+                };
+
+                // adds all locations into DB
+                foreach (Location l in locations)
+                {
+                    context.Location.Add(l);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
-            // ===== 3. Lost Items =====
-            // This section seeds the database with example lost items
-            var lostItems = new LostItem[]
-  {
-
-
-
-        new LostItem { ItemName="Black Phone", DateFound=DateTime.Now.AddDays(-2), LocationID=locations[0].LocationID, CategoryID=categories[0].CategoryID },
-        new LostItem { ItemName="Blue Jacket", DateFound=DateTime.Now.AddDays(-5), LocationID=locations[0].LocationID, CategoryID=categories[1].CategoryID },
-        new LostItem { ItemName="Laptop Bag", DateFound=DateTime.Now.AddDays(-1), LocationID=locations[0].LocationID, CategoryID=categories[2].CategoryID },
-        new LostItem { ItemName="Math Textbook", DateFound=DateTime.Now.AddDays(-3), LocationID=locations[0].LocationID, CategoryID=categories[3].CategoryID },
-        new LostItem { ItemName="Red Scarf", DateFound=DateTime.Now.AddDays(-4), LocationID=locations[1].LocationID, CategoryID=categories[1].CategoryID },
-        new LostItem { ItemName="Water Bottle", DateFound=DateTime.Now.AddDays(-6), LocationID=locations[1].LocationID, CategoryID=categories[2].CategoryID },
-        new LostItem { ItemName="Gym Shoes", DateFound=DateTime.Now.AddDays(-2), LocationID=locations[2].LocationID, CategoryID=categories[1].CategoryID },
-        new LostItem { ItemName="Notebook", DateFound=DateTime.Now.AddDays(-3), LocationID=locations[2].LocationID, CategoryID=categories[3].CategoryID },
-        new LostItem { ItemName="Black Backpack", Description="Nike backpack", DateFound=DateTime.Parse("2026-03-01"), CategoryID=categories[3].CategoryID, LocationID=locations[0].LocationID },
-    new LostItem { ItemName="Blue Jacket", Description="Adidas sports jacket", DateFound=DateTime.Parse("2026-03-02"), CategoryID=categories[1].CategoryID, LocationID=locations[1].LocationID },
-    new LostItem { ItemName="Calculator", Description="Casio scientific calculator", DateFound=DateTime.Parse("2026-03-03"), CategoryID=categories[2].CategoryID, LocationID=locations[2].LocationID },
-    new LostItem { ItemName="Football", Description="White training football", DateFound=DateTime.Parse("2026-03-03"), CategoryID=categories[4].CategoryID, LocationID=locations[8].LocationID }
-  };
-
-            // Adds all lost items to the database
-            foreach (LostItem li in lostItems)
+            // ================= LOST ITEMS SEEDING =================
+            if (!context.LostItem.Any())
             {
-                context.LostItem.Add(li);
+                var lostItems = new LostItem[]
+                {
+                    new LostItem { ItemName="Black Phone", DateFound=DateTime.Now.AddDays(-2), LocationID=1, CategoryID=1 },
+                    new LostItem { ItemName="Blue Jacket", DateFound=DateTime.Now.AddDays(-5), LocationID=2, CategoryID=2 },
+                    new LostItem { ItemName="Laptop Bag", DateFound=DateTime.Now.AddDays(-1), LocationID=3, CategoryID=4 },
+                    new LostItem { ItemName="Math Textbook", DateFound=DateTime.Now.AddDays(-3), LocationID=4, CategoryID=3 },
+                    new LostItem { ItemName="Red Scarf", DateFound=DateTime.Now.AddDays(-4), LocationID=5, CategoryID=2 },
+                    new LostItem { ItemName="Water Bottle", DateFound=DateTime.Now.AddDays(-6), LocationID=6, CategoryID=8 },
+                    new LostItem { ItemName="Gym Shoes", DateFound=DateTime.Now.AddDays(-2), LocationID=2, CategoryID=19 },
+                    new LostItem { ItemName="Notebook", DateFound=DateTime.Now.AddDays(-3), LocationID=1, CategoryID=3 },
+
+                    new LostItem { ItemName="AirPods", Description="White Apple earbuds", DateFound=DateTime.Parse("2026-03-01"), LocationID=1, CategoryID=9 },
+                    new LostItem { ItemName="School Backpack", Description="Nike black backpack", DateFound=DateTime.Parse("2026-03-02"), LocationID=2, CategoryID=4 },
+                    new LostItem { ItemName="Calculator", Description="Casio scientific calculator", DateFound=DateTime.Parse("2026-03-03"), LocationID=4, CategoryID=3 },
+                    new LostItem { ItemName="Football", Description="White training football", DateFound=DateTime.Parse("2026-03-03"), LocationID=8, CategoryID=5 },
+                    new LostItem { ItemName="Glasses", Description="Black reading glasses", DateFound=DateTime.Now.AddDays(-1), LocationID=3, CategoryID=11 },
+                    new LostItem { ItemName="Water Bottle Steel", Description="Metal bottle", DateFound=DateTime.Now.AddDays(-2), LocationID=6, CategoryID=8 }
+                };
+
+                // adds all lost items into DB
+                foreach (LostItem li in lostItems)
+                {
+                    context.LostItem.Add(li);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
-            // ===== 4. Claims =====
-            // This section seeds example claims submitted by users
-            var claims = new Claim[]
-{
-    //changed user id ="user1" to user id= user.id so that it gets the id of the user 
-    new Claim { UserID= user.Id, ItemName="Black Backpack", Description="Lost near library", DateLost=DateTime.Parse("2026-02-28"), Status=ClaimStatus.Submitted, MatchedLostItemID=lostItems[0].LostItemID },
-    new Claim { UserID=user.Id, ItemName="Blue Jacket", Description="Lost during sports", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Approved, MatchedLostItemID=lostItems[1].LostItemID },
-    new Claim { UserID=user.Id, ItemName="Calculator", Description="Left in math class", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Submitted, MatchedLostItemID=lostItems[2].LostItemID },
-    new Claim { UserID=user.Id, ItemName="Football", Description="Lost after practice", DateLost=DateTime.Parse("2026-03-02"), Status=ClaimStatus.Submitted, MatchedLostItemID=lostItems[3].LostItemID }
-    // … more claims here
-};
-
-
-            // Adds all claims to the database
-            foreach (Claim c in claims)
+            // ================= CLAIMS SEEDING =================
+            if (!context.Claim.Any())
             {
-                context.Claim.Add(c);
+                var claims = new Claim[]
+                {
+                    new Claim { UserID=user.Id, ItemName="Black Backpack", Description="Lost near library", DateLost=DateTime.Parse("2026-02-28"), Status=ClaimStatus.Submitted, MatchedLostItemID=1 },
+                    new Claim { UserID=user.Id, ItemName="Blue Jacket", Description="Lost during sports", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Approved, MatchedLostItemID=2 },
+                    new Claim { UserID=user.Id, ItemName="Calculator", Description="Left in math class", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Submitted, MatchedLostItemID=3 },
+                    new Claim { UserID=user.Id, ItemName="Football", Description="Lost after practice", DateLost=DateTime.Parse("2026-03-02"), Status=ClaimStatus.Submitted, MatchedLostItemID=4 },
+                    new Claim { UserID=user.Id, ItemName="AirPods", Description="Lost in cafeteria", DateLost=DateTime.Parse("2026-03-02"), Status=ClaimStatus.Submitted, MatchedLostItemID=9 },
+                    new Claim { UserID=user.Id, ItemName="Glasses", Description="Left in classroom", DateLost=DateTime.Parse("2026-03-03"), Status=ClaimStatus.Submitted, MatchedLostItemID=13 }
+                };
+
+                // adds all claims into DB
+                foreach (Claim c in claims)
+                {
+                    context.Claim.Add(c);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
-
-
         }
     }
 }
