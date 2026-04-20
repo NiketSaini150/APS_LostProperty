@@ -221,8 +221,8 @@ namespace APS_LostProperty.Controllers
             // if valid, update fields
             if (ModelState.IsValid)
             {
-                existing.ItemName = claim.ItemName;
-                existing.Description = claim.Description;
+                existing.ClaimedItemName= claim.ClaimedItemName;
+                existing.ClaimedDescription = claim.ClaimedDescription;
                 existing.DateLost = claim.DateLost;
                 existing.MatchedLostItemID = claim.MatchedLostItemID;
                 existing.Status = claim.Status;

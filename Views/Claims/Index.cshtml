@@ -34,10 +34,10 @@
                 @Html.DisplayNameFor(model => model.IdentityUser)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ItemName)
+                @Html.DisplayNameFor(model => model.ClaimedItemName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.ClaimedDescription)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DateLost)
@@ -62,10 +62,10 @@
                     @Html.DisplayFor(model => item.IdentityUser.Email)
                 </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ItemName)
+                    @Html.DisplayFor(modelItem => item.ClaimedItemName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayFor(modelItem => item.ClaimedDescription)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateLost)

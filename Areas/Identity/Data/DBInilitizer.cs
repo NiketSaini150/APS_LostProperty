@@ -144,12 +144,12 @@ namespace APS_LostProperty.Areas.Identity.Data
             {
                 var claims = new Claim[]
                 {
-                    new Claim { UserID=user.Id, ItemName="Black Backpack", Description="Lost near library", DateLost=DateTime.Parse("2026-02-28"), Status=ClaimStatus.Submitted, MatchedLostItemID=1 },
-                    new Claim { UserID=user.Id, ItemName="Blue Jacket", Description="Lost during sports", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Approved, MatchedLostItemID=2 },
-                    new Claim { UserID=user.Id, ItemName="Calculator", Description="Left in math class", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Submitted, MatchedLostItemID=3 },
-                    new Claim { UserID=user.Id, ItemName="Football", Description="Lost after practice", DateLost=DateTime.Parse("2026-03-02"), Status=ClaimStatus.Submitted, MatchedLostItemID=4 },
-                    new Claim { UserID=user.Id, ItemName="AirPods", Description="Lost in cafeteria", DateLost=DateTime.Parse("2026-03-02"), Status=ClaimStatus.Submitted, MatchedLostItemID=9 },
-                    new Claim { UserID=user.Id, ItemName="Glasses", Description="Left in classroom", DateLost=DateTime.Parse("2026-03-03"), Status=ClaimStatus.Submitted, MatchedLostItemID=13 }
+                    new Claim { UserID=user.Id, ClaimedItemName="Black Backpack", ClaimedDescription="Lost near library", DateLost=DateTime.Parse("2026-02-28"), Status=ClaimStatus.Submitted, MatchedLostItemID=1 },
+                    new Claim { UserID=user.Id, ClaimedItemName="Blue Jacket", ClaimedDescription="Lost during sports", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Approved, MatchedLostItemID=2 },
+                    new Claim { UserID=user.Id, ClaimedItemName="Calculator", ClaimedDescription="Left in math class", DateLost=DateTime.Parse("2026-03-01"), Status=ClaimStatus.Submitted, MatchedLostItemID=3 },
+                    new Claim { UserID=user.Id, ClaimedItemName="Football", ClaimedDescription="Lost after practice", DateLost=DateTime.Parse("2026-03-02"), Status=ClaimStatus.Submitted, MatchedLostItemID=4 },
+                    new Claim { UserID=user.Id, ClaimedItemName="AirPods", ClaimedDescription="Lost in cafeteria", DateLost=DateTime.Parse("2026-03-02"), Status=ClaimStatus.Submitted, MatchedLostItemID=9 },
+                    new Claim { UserID=user.Id, ClaimedItemName="Glasses", ClaimedDescription="Left in classroom", DateLost=DateTime.Parse("2026-03-03"), Status=ClaimStatus.Submitted, MatchedLostItemID=13 }
                 };
 
                 // adds all claims into DB

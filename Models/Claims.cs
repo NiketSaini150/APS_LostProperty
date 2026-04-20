@@ -35,14 +35,14 @@ namespace APS_LostProperty.Models
         // Allows letters, numbers, spaces, apostrophes, and dashes
         // Prevents special characters such as @ or #
         [RegularExpression("^[A-Za-z0-9'\\- ]+$", ErrorMessage = "Only letters, numbers, spaces, apostrophes, and dashes are allowed.")]
-        public string ItemName { get; set; }
+        public string ClaimedItemName { get; set; }
 
     
 
         // Regex validation allowing words, spaces, punctuation, and common symbols
         // Prevents unsafe or unexpected characters
         [RegularExpression(@"^[\w\s.,!?'""-]*$", ErrorMessage = "Description contains invalid characters.")]
-        public string? Description { get; set; }
+        public string? ClaimedDescription { get; set; }
 
         // Date the user says the item was lost
         // This field is required
