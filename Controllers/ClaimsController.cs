@@ -107,7 +107,7 @@ namespace APS_LostProperty.Controllers
         {
             // load dropdown list of lost items so user can select one
             ViewData["MatchedLostItemID"] =
-                new SelectList(_context.LostItem, "LostItemID", "ItemName");
+                new SelectList(_context.LostItem, "LostItemID", "ClaimedItemName");
 
             return View();
         }
@@ -116,7 +116,7 @@ namespace APS_LostProperty.Controllers
         // this runs when user submits the create form
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ItemName,Description,DateLost")] APS_LostProperty.Models.Claim claim)
+        public async Task<IActionResult> Create([Bind("ClaimedItemName,ClaimedDescription,DateLost")] APS_LostProperty.Models.Claim claim)
         {
             // automatically set logged-in user ID
             claim.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -177,7 +177,7 @@ namespace APS_LostProperty.Controllers
                 new SelectList(
                     _context.LostItem.OrderBy(l => l.ItemName),
                     "LostItemID",
-                    "ItemName",
+                    "ClaimedItemName",
                     claim.MatchedLostItemID
                 );
 
@@ -189,7 +189,7 @@ namespace APS_LostProperty.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
-            [Bind("ClaimID,ItemName,Description,DateLost,MatchedLostItemID,Status")] APS_LostProperty.Models.Claim claim)
+            [Bind("ClaimID,ClaimedItemName,ClaimedDescription,DateLost,MatchedLostItemID,Status")] APS_LostProperty.Models.Claim claim)
         {
             // check id matches claim
             if (id != claim.ClaimID)
@@ -235,7 +235,7 @@ namespace APS_LostProperty.Controllers
             ViewData["MatchedLostItemID"] = new SelectList(
                 _context.LostItem.OrderBy(l => l.ItemName),
                 "LostItemID",
-                "ItemName",
+                "ClaimedItemName",
                 claim.MatchedLostItemID
             );
 

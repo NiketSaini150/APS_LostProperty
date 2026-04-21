@@ -1,2 +1,2 @@
-﻿SELECT Distinct COUNT(*) AS "Number of Locations"
+﻿SELECT  COUNT(*) AS "Number of Locations"
 FROM Location
