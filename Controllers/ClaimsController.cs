@@ -139,7 +139,7 @@ namespace APS_LostProperty.Controllers
 
             // check if date is in the future
             if (claim.DateLost > today)
-                ModelState.AddModelError("DateLost", "invalid date");
+                ModelState.AddModelError("DateLost", "Date Cannot Be in The Future");
 
             // check if date is too old
             if (claim.DateLost < oneYearAgo)

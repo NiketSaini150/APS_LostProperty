@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using APS_LostProperty.Migrations;
 
 namespace APS_LostProperty.Areas.Identity.Pages.Account
 {
@@ -112,9 +113,34 @@ namespace APS_LostProperty.Areas.Identity.Pages.Account
 
             public string LastName { get; set; }
             [Display (Name = "Date Subbmited")]
-            [DataType(DataType.Date)]
             public DateTime DateRegistered { get; set; } = DateTime.Now;
+
+            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+            {
+                var today = DateTime.Now;
+
+                if (DateRegistered <= today)
+                {
+                    yield return new ValidationResult(
+                        "Estimated Time Of Arrival cannot be in the past.",
+                        new[] { nameof(DateRegistered) }
+                    );
+                }
+                else
+                {
+                    if (DateRegistered >= today)
+                    {
+                        yield return new ValidationResult(
+                                           "Date registered cannot be in the future.",
+                                           new[] { nameof(DateRegistered) }
+                                       );
+                    }
+                }
+            }
+
         }
+
+
 
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -122,6 +148,7 @@ namespace APS_LostProperty.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
+
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
