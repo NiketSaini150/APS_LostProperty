@@ -15,12 +15,19 @@ namespace APS_LostProperty.Areas.Identity.Data
     {
         [Required]
         [StringLength(50)]
-        public string FirstName { get; set; } = string.Empty; // User's first name
+
+        [RegularExpression("^[A-Za-z0-9'\\- ]+$", ErrorMessage = "Only letters, numbers, spaces, apostrophes, and dashes are allowed.")]
+
+        public string FirstName { get; set; }  // User's first name
 
         [Required]
         [StringLength(50)]
-        public string LastName { get; set; } = string.Empty; // User's last name
 
+        [RegularExpression("^[A-Za-z0-9'\\- ]+$", ErrorMessage = "Only letters, numbers, spaces, apostrophes, and dashes are allowed.")]
+
+        public string LastName { get; set; }  // User's last name
+
+        [DataType(DataType.Date)]
         public DateTime DateRegistered { get; set; } = DateTime.Now; // The date the user registered in the system
 
         // Navigation property linking this user to their submitted claims

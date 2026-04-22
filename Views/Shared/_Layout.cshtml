@@ -4,18 +4,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - APS_LostProperty</title>
+
     <script type="importmap"></script>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/APS_LostProperty.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color:#1e1e1e; border-bottom:1px solid #2a2a2a;">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
             <div class="container-fluid">
 
                 <!-- Brand -->
-                <a class="navbar-brand fw-bold text-light" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
                     APS Lost Property
                 </a>
 
@@ -34,42 +37,41 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Categories" asp-action="Index">Categories</a>
+                            <a class="nav-link text-dark"  asp-controller="Categories" asp-action="Index">Categories</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Locations" asp-action="Index">Locations</a>
+                            <a class="nav-link text-dark" asp-controller="Locations" asp-action="Index">Locations</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="LostItems" asp-action="Index">Lost Items</a>
+                            <a class="nav-link text-dark" asp-controller="LostItems" asp-action="Index">Lost Items</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Claims" asp-action="Index">Claims</a>
+                            <a class="nav-link text-dark" asp-controller="Claims" asp-action="Index">Claims</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link text-light fw-semibold" style="opacity:0.9;" asp-controller="Admin" asp-action="Index">
+                            <a class="nav-link text-dark fw-semibold" asp-controller="Admin" asp-action="Index">
                                 Admin
                             </a>
                         </li>
 
                     </ul>
 
-                    <!-- Search (optional but styled) -->
-                    <form class="d-flex" role="search" method="get" asp-controller="LostItems" asp-action="Index">
+                    <!-- Search -->
+                    <form class="d-flex text-dark" role="search" method="get" asp-controller="LostItems" asp-action="Index">
                         <input class="form-control form-control-sm me-2"
                                type="search"
                                name="searchString"
-                               placeholder="Search items..."
-                               style="background-color:#2a2a2a; border:1px solid #3a3a3a; color:white;" />
+                               placeholder="Search items..." />
 
-                        <button class="btn btn-sm btn-outline-light" type="submit">
+                        <button class="btn btn-sm btn-outline-dark" type="submit">
                             Search
                         </button>
                     </form>
@@ -83,20 +85,24 @@
             </div>
         </nav>
     </header>
+
+    <!-- Main content -->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
+    <!-- Footer -->
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - APS_LostProperty - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+        <!-- Footer content (optional) -->
     </footer>
+
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

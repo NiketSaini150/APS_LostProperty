@@ -98,6 +98,22 @@ namespace APS_LostProperty.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+
+            [Required]
+            [StringLength(50)]
+            [RegularExpression("^[A-Za-z0-9'\\- ]+$", ErrorMessage = "Only letters, numbers, spaces, apostrophes, and dashes are allowed.")]
+
+            public string FirstName { get; set; }
+
+            [Required]
+            [StringLength(50)]
+            [RegularExpression("^[A-Za-z0-9'\\- ]+$", ErrorMessage = "Only letters, numbers, spaces, apostrophes, and dashes are allowed.")]
+
+            public string LastName { get; set; }
+            [Display (Name = "Date Subbmited")]
+            [DataType(DataType.Date)]
+            public DateTime DateRegistered { get; set; } = DateTime.Now;
         }
 
 
@@ -114,6 +130,9 @@ namespace APS_LostProperty.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.DateRegistered = Input.DateRegistered;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
