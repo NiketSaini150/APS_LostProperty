@@ -1,5 +1,6 @@
 ﻿using APS_LostProperty.Areas.Identity.Data;
 using APS_LostProperty.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -160,6 +161,7 @@ namespace APS_LostProperty.Controllers
         // GET: Edit
         // loads edit page for a specific claim
         [HttpGet]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> Edit(int? id)
         {
             // if no id provided, return error
@@ -188,6 +190,7 @@ namespace APS_LostProperty.Controllers
         // saves updated claim data
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> Edit(int id,
             [Bind("ClaimID,ClaimedItemName,ClaimedDescription,DateLost,MatchedLostItemID,Status")] APS_LostProperty.Models.Claim claim)
         {
@@ -245,6 +248,7 @@ namespace APS_LostProperty.Controllers
         // GET: Delete
         // shows confirmation page before deleting claim
         [HttpGet]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -266,6 +270,7 @@ namespace APS_LostProperty.Controllers
         // permanently removes claim from database
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var claim = await _context.Claim.FindAsync(id);
