@@ -16,7 +16,7 @@ namespace APS_LostProperty.Areas.Identity.Data
             context.Database.EnsureCreated();
 
             // ================= ROLE SEEDING =================
-            string[] roles = { "Staff", "Student" };
+            string[] roles = { "Staff"};
 
             foreach (var role in roles)
             {
@@ -59,7 +59,7 @@ namespace APS_LostProperty.Areas.Identity.Data
                 };
 
                 userManager.CreateAsync(user, "Password123!").Wait();
-                userManager.AddToRoleAsync(user, "Student").Wait();
+           
             }
 
 
