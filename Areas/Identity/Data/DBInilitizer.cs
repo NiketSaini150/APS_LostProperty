@@ -8,22 +8,43 @@ namespace APS_LostProperty.Areas.Identity.Data
     // This class runs when the app starts and fills the database with initial test data
     public static class DBInilitizer
     {
-        public static void Initialize(DBContext context, UserManager<User> userManager /*, RoleManager<IdentityRole> roleManager */)
+        public static void Initialize(DBContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             // makes sure database exists before doing anything
+   
+            // ensure database exists
             context.Database.EnsureCreated();
 
-            // ---------------- ROLE SETUP (COMMENTED OUT FOR NOW) ----------------
-            /*
-            if (!roleManager.RoleExistsAsync("Staff").Result)
-                roleManager.CreateAsync(new IdentityRole("Staff")).Wait();
+            // ================= ROLE SEEDING =================
+            string[] roles = { "Staff", "Student" };
 
-            if (!roleManager.RoleExistsAsync("Student").Result)
-                roleManager.CreateAsync(new IdentityRole("Student")).Wait();
-            */
-            // -------------------------------------------------------------------
+            foreach (var role in roles)
+            {
+                if (!roleManager.RoleExistsAsync(role).Result)
+                {
+                    roleManager.CreateAsync(new IdentityRole(role)).Wait();
+                }
+            }
 
-            // creates a default test user if it doesn't already exist
+            // ================= STAFF USER =================
+            var staff = userManager.FindByEmailAsync("staff@test.com").Result;
+
+            if (staff == null)
+            {
+                staff = new User
+                {
+                    UserName = "staff@test.com",
+                    Email = "staff@test.com",
+                    EmailConfirmed = true,
+                    FirstName = "School",
+                    LastName = "Staff"
+                };
+
+                userManager.CreateAsync(staff, "Staff123!").Wait();
+                userManager.AddToRoleAsync(staff, "Staff").Wait();
+            }
+
+            // ================= STUDENT USER =================
             var user = userManager.FindByEmailAsync("user1@test.com").Result;
 
             if (user == null)
@@ -32,11 +53,20 @@ namespace APS_LostProperty.Areas.Identity.Data
                 {
                     UserName = "user1@test.com",
                     Email = "user1@test.com",
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    FirstName = "Fe ao",
+                    LastName = "Zheng"
                 };
 
                 userManager.CreateAsync(user, "Password123!").Wait();
+                userManager.AddToRoleAsync(user, "Student").Wait();
             }
+
+
+
+
+
+
 
             // ================= CATEGORY SEEDING =================
             // only runs if categories table is empty
