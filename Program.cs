@@ -1,37 +1,37 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using APS_LostProperty.Areas.Identity.Data;
-using APS_LostProperty.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("LostPropertyContextConnection") ?? throw new InvalidOperationException("Connection string 'LostPropertyContextConnection' not found.");;
 
-builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(connectionString));
+// Get connection string from appsettings.json
+var connectionString =
+    builder.Configuration.GetConnectionString("LostPropertyContextConnection")
+    ?? throw new InvalidOperationException("Connection string 'LostPropertyContextConnection' not found.");
 
-// Identity setup (supports roles)
-builder.Services.AddIdentity<User, IdentityRole>(options =>
+// Register database context
+builder.Services.AddDbContext<DBContext>(options =>
+    options.UseSqlServer(connectionString));
+
+// Identity setup with roles enabled
+// IMPORTANT: Uses custom User class (not IdentityUser)
+builder.Services.AddDefaultIdentity<User>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = true;
+    // Basic password rules (can be changed)
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
 })
-.AddEntityFrameworkStores<DBContext>()
-.AddDefaultTokenProviders();
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<DBContext>();
 
-// Add services to the container.
+// Add MVC and Razor Pages services
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-
-
-//// ===== Seed Database =====
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    var context = services.GetRequiredService<DBContext>();
-//    var userManager = services.GetRequiredService<UserManager<User>>();
-//}
-
+// Seed roles and default users on startup
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -42,36 +42,41 @@ using (var scope = app.Services.CreateScope())
         var userManager = services.GetRequiredService<UserManager<User>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
+        // Initialize database (create roles + users)
         DBInilitizer.Initialize(context, userManager, roleManager);
     }
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred creating or seeding the DB.");
+        logger.LogError(ex, "Error seeding database.");
     }
 }
 
-// Configure the HTTP request pipeline.
+// Configure HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseAuthentication();   // REQUIRED for Identity
+// Authentication must come before Authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
+// Map Razor Pages
 app.MapRazorPages();
 
+// Static assets support
 app.MapStaticAssets();
 
+// Default MVC route
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+// Run application
 app.Run();
