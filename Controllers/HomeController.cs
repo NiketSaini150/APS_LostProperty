@@ -1,10 +1,12 @@
 using System.Diagnostics;
 using APS_LostProperty.Areas.Identity.Data;
 using APS_LostProperty.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APS_LostProperty.Controllers
 {
+    
     public class HomeController : Controller
     {
         // logger for debugging (already built-in)

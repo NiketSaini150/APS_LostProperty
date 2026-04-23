@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using APS_LostProperty.Areas.Identity.Data;
+using APS_LostProperty.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using APS_LostProperty.Areas.Identity.Data;
-using APS_LostProperty.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace APS_LostProperty.Controllers
 {
+    [Authorize(Roles = "Staff")]
     public class LocationsController : Controller
     {
         // database connection (dependency injection)
