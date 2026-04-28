@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APS_LostProperty.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20260423223925_registermodel")]
-    partial class registermodel
+    [Migration("20260428021351_category")]
+    partial class category
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
