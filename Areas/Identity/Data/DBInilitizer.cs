@@ -63,11 +63,6 @@ namespace APS_LostProperty.Areas.Identity.Data
             }
 
 
-
-
-
-
-
             // ================= CATEGORY SEEDING =================
             // only runs if categories table is empty
             if (!context.Category.Any())
