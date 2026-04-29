@@ -68,11 +68,14 @@ namespace APS_LostProperty.Controllers
             // sort results so better matches appear first
             // here we try to push "starts with" matches to the top
             claimsQuery = claimsQuery
-                     .OrderBy(c =>
-                         c.IdentityUser.UserName.StartsWith(searchString) ? 0 : 1
-                     )
-                     // then sort everything alphabetically after priority sorting
-                     .ThenBy(c => c.IdentityUser.UserName);
+    .OrderBy(c =>
+        !string.IsNullOrEmpty(searchString) &&
+        c.IdentityUser != null &&
+        c.IdentityUser.UserName != null &&
+        c.IdentityUser.UserName.StartsWith(searchString)
+            ? 0 : 1
+    )
+   .ThenBy(c => c.IdentityUser != null ? c.IdentityUser.UserName : "");
 
             // ---------------- PAGINATION SECTION ----------------
 
@@ -125,7 +128,7 @@ namespace APS_LostProperty.Controllers
         {
             // load dropdown list of lost items so user can select one
             ViewData["MatchedLostItemID"] =
-                new SelectList(_context.LostItem, "LostItemID", "ClaimedItemName");
+                new SelectList(_context.LostItem, "LostItemID", "ItemName");
 
             return View();
         }
@@ -185,7 +188,10 @@ namespace APS_LostProperty.Controllers
             if (id == null) return NotFound();
 
             // find claim in database
-            var claim = await _context.Claim.FindAsync(id);
+            var claim = await _context.Claim
+      .Include(c => c.IdentityUser)
+      .Include(c => c.MatchedLostItem)
+      .FirstOrDefaultAsync(c => c.ClaimID == id);
 
             // if claim doesn't exist
             if (claim == null)
@@ -196,7 +202,7 @@ namespace APS_LostProperty.Controllers
                 new SelectList(
                     _context.LostItem.OrderBy(l => l.ItemName),
                     "LostItemID",
-                    "ClaimedItemName",
+                    "ItemName",
                     claim.MatchedLostItemID
                 );
 
@@ -255,7 +261,7 @@ namespace APS_LostProperty.Controllers
             ViewData["MatchedLostItemID"] = new SelectList(
                 _context.LostItem.OrderBy(l => l.ItemName),
                 "LostItemID",
-                "ClaimedItemName",
+                "ItemName",
                 claim.MatchedLostItemID
             );
 
@@ -290,8 +296,10 @@ namespace APS_LostProperty.Controllers
         [Authorize(Roles = "Staff")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var claim = await _context.Claim.FindAsync(id);
-
+            var claim = await _context.Claim
+     .Include(c => c.IdentityUser)
+     .Include(c => c.MatchedLostItem)
+     .FirstOrDefaultAsync(c => c.ClaimID == id);
             if (claim != null)
             {
                 _context.Claim.Remove(claim);
