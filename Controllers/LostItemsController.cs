@@ -104,6 +104,26 @@ namespace APS_LostProperty.Controllers
 
             return View();
         }
+        // GET: LostItems/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var lostItem = await _context.LostItem
+                .Include(l => l.Category)
+                .Include(l => l.Location)
+                .FirstOrDefaultAsync(m => m.LostItemID == id);
+
+            if (lostItem == null)
+            {
+                return NotFound();
+            }
+
+            return View(lostItem);
+        }
 
         // POST: Create
         // saves new lost item into database

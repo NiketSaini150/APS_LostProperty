@@ -100,6 +100,23 @@ namespace APS_LostProperty.Controllers
             // return final filtered + paginated list to view
             return View(claims);
         }
+        // GET: Claims/Details/5
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var claim = await _context.Claim
+                .Include(c => c.IdentityUser)
+                .Include(c => c.MatchedLostItem)
+                .FirstOrDefaultAsync(m => m.ClaimID == id);
+
+            if (claim == null)
+                return NotFound();
+
+            return View(claim);
+        }
 
         // GET: Create
         // this loads the create claim page (form view)
