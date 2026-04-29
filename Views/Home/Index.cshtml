@@ -4,15 +4,20 @@
 
 <h1>Lost Property Management System</h1>
 
-<p>
-    welcome to the lost property webapp, This system helps students and staff report, track, and manage lost and found items.
-</p>
+<h4>
+    welcome to the lost property webapp, This system helps students report items they have lost. 
+    Helps Staff, track, and manage lost and found items.
+
+    if you are a student and have lost an item please register to make a claim about your lost item.
+    Then the staff will later review it and contact you though your emial if the item is found. 
+    
+</h4>
 
 <hr />
 
 <h2>Navigation</h2>
 
-<ul>
+<ul class="d-flex gap-3 list-unstyled "  >
     <li>
         <a asp-controller="LostItems" asp-action="Index" class="btn btn-primary">View Lost Items</a>
     </li>
@@ -23,11 +28,10 @@
         <a asp-controller="Admin" asp-action="Index" class="btn btn-primary">Admin Panel</a>
     </li>
 </ul>
+<h4>How It Works</h4>
 
-<h2>How It Works</h2>
 
-
-    <p>Items are logged when found.
+    <h3>Items are logged when found.
     Users can search for their items.
     Claims are submitted for lost items.
-    Staff review and return matched items.</p>
+    Staff review and return matched items.</h3>
