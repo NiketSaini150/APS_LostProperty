@@ -12,6 +12,7 @@ namespace APS_LostProperty.Models
     {
         // Primary Key for the LostItem table
         // Uniquely identifies each lost item in the database
+        [Display(Name = "Lost Item ID")]
         public int LostItemID { get; set; }
 
         // Name of the item that was found
@@ -25,6 +26,8 @@ namespace APS_LostProperty.Models
         // Allows only letters, numbers, spaces, apostrophes, and dashes
         // Prevents invalid characters such as @ or #
         [RegularExpression("^[A-Za-z0-9'\\- ]+$", ErrorMessage = "Only letters, numbers, spaces, apostrophes, and dashes are allowed.")]
+        [Display(Name = "Item Name")]
+
         public string ItemName { get; set; }
 
         // Optional description of the lost item
@@ -36,6 +39,7 @@ namespace APS_LostProperty.Models
 
         // Regular expression validation to ensure only allowed characters are entered
         [RegularExpression("^[A-Za-z0-9'\\- ]+$", ErrorMessage = "Only letters, numbers, spaces, apostrophes, and dashes are allowed.")]
+        [Display(Name = "Item Description")]
         public string? Description { get; set; }
 
         // Date when the item was found
@@ -47,11 +51,13 @@ namespace APS_LostProperty.Models
 
         // Custom validation method used to check that the date is not in the future
         [CustomValidation(typeof(LostItem), nameof(ValidateDateFound))]
+        [Display(Name = "Date Found")]
         public DateTime DateFound { get; set; }
 
         // Foreign Key linking the lost item to a category
         // Example categories: Electronics, Clothing, Bags
         public int CategoryID { get; set; }
+        [Display(Name = "Category")] 
 
         // Navigation property linking the lost item to the Category table
         [ForeignKey("CategoryID")]
@@ -60,6 +66,7 @@ namespace APS_LostProperty.Models
         // Foreign Key linking the lost item to the location where it was found
         // Example locations: Library, Gym, Classroom
         public int LocationID { get; set; }
+        [Display(Name = "Location")]
 
         // Navigation property linking the lost item to the Location table
         [ForeignKey("LocationID")]
@@ -67,6 +74,8 @@ namespace APS_LostProperty.Models
 
         // Boolean value that indicates whether the lost item has been claimed
         // Default value is false when the item is first recorded
+        [Display(Name = "Claimed ")]
+
         public bool IsClaimed { get; set; } = false;
 
         // Navigation property representing the relationship between LostItem and Claim
