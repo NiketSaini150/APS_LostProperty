@@ -27,7 +27,7 @@ namespace APS_LostProperty.Controllers
         public async Task<IActionResult> Index(string searchString, int page = 1)
         {
             // number of categories per page
-            int pageSize = 5;
+            int pageSize = 10;
 
             // start query from Category table
             var categoriesQuery = _context.Category.AsQueryable();

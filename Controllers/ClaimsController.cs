@@ -32,7 +32,7 @@ namespace APS_LostProperty.Controllers
         public async Task<IActionResult> Index(string searchString, int page = 1)
         {
             // how many items we want per page (pagination size)
-            int pageSize = 5;
+            int pageSize = 10;
 
             // start building query from Claim table
             // IQueryable means we can keep adding filters before actually running SQL

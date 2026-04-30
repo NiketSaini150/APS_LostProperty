@@ -28,7 +28,7 @@ namespace APS_LostProperty.Controllers
         public async Task<IActionResult> Index(string Searchstring, int page = 1)
         {
             // number of items per page
-            int pagesize = 5;
+            int pagesize = 10;
 
             // start query from Location table
             var LocationQuery = _context.Location.AsQueryable();

@@ -29,7 +29,7 @@ namespace APS_LostProperty.Controllers
         public async Task<IActionResult> Index(string searchString, int page = 1)
         {
             // number of items shown per page
-            int pageSize = 5;
+            int pageSize = 10;
 
             // start building query from LostItem table
             // IQueryable allows filtering BEFORE hitting database
