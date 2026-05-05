@@ -10,6 +10,7 @@ namespace APS_LostProperty.Models
     {
         // Primary Key for the Location table
         // This uniquely identifies each location in the database
+        [Display(Name = "Location ID ")] 
         public int LocationID { get; set; }
 
         // The name of the location where the item was found
@@ -23,6 +24,7 @@ namespace APS_LostProperty.Models
         // Allows only letters, numbers, spaces, apostrophes, and dashes
         // Prevents special characters such as @, #, or %
         [RegularExpression("^[A-Za-z0-9'\\- ]+$", ErrorMessage = "Only letters, numbers, spaces, apostrophes, and dashes are allowed.")]
+        [Display(Name = "Location Name")]
         public string LocationName { get; set; }
 
 

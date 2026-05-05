@@ -9,6 +9,7 @@ namespace APS_LostProperty.Models
     {
         // Primary key for the Category table
         // This uniquely identifies each category in the database
+      
         public int CategoryID { get; set; }
 
         // This field is required, meaning a category cannot be created without a name
