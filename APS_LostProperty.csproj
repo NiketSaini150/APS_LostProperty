@@ -19,6 +19,14 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\LINQ\" />
+    <Folder Include="wwwroot\Img\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Img\Avondale_College_D_Block.jpg" />
+    <None Include="wwwroot\Img\kids.jpg" />
+    <None Include="wwwroot\Img\Lost property.jpg" />
+    <None Include="wwwroot\Img\sports.jpg" />
   </ItemGroup>
 
 </Project>
