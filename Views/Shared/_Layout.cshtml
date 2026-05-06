@@ -21,16 +21,17 @@
 
     <header>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-sm bg-dark">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark rounded">
 
             <div class="container-fluid">
                 <!-- Brand -->
-                <a class="navbar-brand fw-bold text-light " asp-controller="Home" asp-action="Index">
-                    APS Lost Property
+                <a class="navbar-brand fw-bold text-light "  asp-controller="Home" asp-action="Index">
+                    <img src="~/img/logo.jpg" alt=" Logo" style="width:70px" class=" rounded-pill" />
+           
                 </a>
 
                 <!-- Mobile toggle -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                <button class="navbar-toggler nav-link text-light" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent"
                         aria-controls="navbarSupportedContent"
                         aria-expanded="false"
@@ -110,7 +111,7 @@
 
 
     <!-- Main content -->
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
 
