@@ -2,143 +2,162 @@
     ViewData["Title"] = "Home Page";
 }
 
+<!-- PAGE TITLE CARD -->
+<div class="card shadow mb-3">
 
-<h1>Lost Property Management System</h1>
+    <div class="card-body">
 
-<div class="mt-3 mb-3">
+        <h1>Lost Property Management System</h1>
 
-    <h4>Welcome</h4>
+        <p>
+            Welcome to the lost property webapp. This system helps students report items they have lost
+            and helps staff track and manage everything.
+        </p>
 
-    <p>
-        Welcome to the lost property webapp. This system helps students report items they have lost
-        and helps staff manage and track everything.
-    </p>
+        <p>
+            If you are a student and have lost an item you can register and make a claim.
+            Staff will review it and contact you though email if the item is found.
+        </p>
 
-    <p>
-        If you are a student and have lost an item you can register and make a claim.
-        Staff will review it and contact you though email if the item is found.
-    </p>
+        <p>
+            Everything is stored in one place so it is easier instead of asking around or going office to office.
+        </p>
+
+    </div>
 
 </div>
 
-<hr />
+<!-- MAIN DASHBOARD ROW -->
+<div class="d-flex gap-4">
 
-<div class="d-flex gap-4 mt-4">
-
-    
+    <!-- LEFT COLUMN: CAROUSEL CARD -->
     <div style="width:60%;">
 
-        <div id="demo"
-             class="carousel slide border border-dark border-5 rounded shadow overflow-hidden"
-             data-bs-ride="carousel"
-             style="height:65%;">
+        <div class="card shadow">
 
-            <!-- indicators -->
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+            <div class="card-body p-2">
+
+                <!-- CAROUSEL -->
+                <div id="demo"
+                     class="carousel slide border border-dark border-5 rounded overflow-hidden"
+                     data-bs-ride="carousel"
+                     style="height:60%;">
+
+                    <!-- indicators -->
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                    </div>
+
+                    <!-- images -->
+                    <div class="carousel-inner" style="height:100%;">
+
+                        <div class="carousel-item active" style="height:100%;">
+                            <img src="~/Img/Avondale_College_D_Block.jpg"
+                                 class="d-block w-100"
+                                 style="height:100%; object-fit:cover;"
+                                 alt="Avondale College">
+                        </div>
+
+                        <div class="carousel-item" style="height:100%;">
+                            <img src="~/Img/Lost property.jpg"
+                                 class="d-block w-100"
+                                 style="height:100%; object-fit:cover;"
+                                 alt="Lost property">
+                        </div>
+
+                        <div class="carousel-item" style="height:100%;">
+                            <img src="~/Img/sports.jpg"
+                                 class="d-block w-100"
+                                 style="height:100%; object-fit:cover;"
+                                 alt="Sports">
+                        </div>
+
+                    </div>
+
+                    <!-- controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-dark rounded-circle p-3"></span>
+                    </button>
+
+                    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-dark rounded-circle p-3"></span>
+                    </button>
+
+                </div>
+
             </div>
-
-            <!-- images -->
-            <div class="carousel-inner" style="height:100%;">
-
-                <div class="carousel-item active" style="height:100%;">
-                    <img src="~/Img/Avondale_College_D_Block.jpg"
-                         class="d-block w-100"
-                         style="height:100%; object-fit:cover;"
-                         alt="Avondale College">
-                </div>
-
-                <div class="carousel-item" style="height:100%;">
-                    <img src="~/Img/Lost property.jpg"
-                         class="d-block w-100"
-                         style="height:100%; object-fit:cover;"
-                         alt="Lost property">
-                </div>
-
-                <div class="carousel-item" style="height:100%;">
-                    <img src="~/Img/sports.jpg"
-                         class="d-block w-100"
-                         style="height:100%; object-fit:cover;"
-                         alt="Sports">
-                </div>
-
-            </div>
-
-            <!-- controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon bg-dark rounded-circle p-3"></span>
-            </button>
-
-            <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-                <span class="carousel-control-next-icon bg-dark rounded-circle p-3"></span>
-            </button>
 
         </div>
 
     </div>
 
+    <!-- RIGHT COLUMN -->
     <div style="width:40%;" class="d-flex flex-column gap-4">
 
-        <!-- NAVIGATION -->
-        <div>
+        <!-- NAVIGATION CARD -->
+        <div class="card shadow">
 
-            <h4>Navigation</h4>
+            <div class="card-body">
 
-            <ul class="list-unstyled d-flex flex-column gap-3">
+                <h4>Navigation</h4>
 
-                <li>
-                    <a asp-controller="LostItems" asp-action="Index"
-                       class="btn btn-primary w-100">
-                        View Lost Items
-                    </a>
-                </li>
+                <ul class="list-unstyled d-flex flex-column gap-3">
 
-                <li>
-                    <a asp-controller="Claims" asp-action="Index"
-                       class="btn btn-primary w-100">
-                        View Claims
-                    </a>
-                </li>
+                    <li>
+                        <a asp-controller="LostItems" asp-action="Index"
+                           class="btn btn-primary w-100">
+                            View Lost Items
+                        </a>
+                    </li>
 
-                <li>
-                    <a asp-controller="Admin" asp-action="Index"
-                       class="btn btn-primary w-100">
-                        Admin Panel
-                    </a>
-                </li>
+                    <li>
+                        <a asp-controller="Claims" asp-action="Index"
+                           class="btn btn-primary w-100">
+                            View Claims
+                        </a>
+                    </li>
 
-            </ul>
+                    <li>
+                        <a asp-controller="Admin" asp-action="Index"
+                           class="btn btn-primary w-100">
+                            Admin Panel
+                        </a>
+                    </li>
 
-            <p>
-                Admin panel is mostly for staff only, students normally don’t use it.
-            </p>
+                </ul>
+
+                <p>
+                    Admin panel is mostly for staff only, students normally don’t use it.
+                </p>
+
+            </div>
 
         </div>
 
-      
-        <div>
+        <!-- HOW IT WORKS CARD -->
+        <div class="card shadow">
 
-            <h4>How It Works</h4>
+            <div class="card-body">
 
-            <h5>
-                If you are a student and have lost an item please register
-                to make a claim about your lost item.
+                <h4>How It Works</h4>
 
-                Then staff will review it and contact you through email if found.
+                <p>
+                    If you are a student and have lost an item, register a claim in the system.
+                    Staff will review it and contact you via email if the item is found.
+                </p>
 
-                After that go to claims tab and create a new claim form.
+                <p>
+                    You can search for lost items and submit claims for them.
+                    Staff handle matching and returning items.
+                </p>
 
-                Users can search for lost items in the system.
+                <p>
+                    Everything is stored digitally so nothing gets lost or forgotten.
+                </p>
 
-                Claims are submitted for lost items and matched by staff.
-
-                <br /><br />
-
-                The system keeps everything in one place so it is easier than asking around or going office to office.
-                It helps both students and staff stay organised.
-            </h5>
+            </div>
 
         </div>
 
