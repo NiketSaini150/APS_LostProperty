@@ -2,12 +2,14 @@
     ViewData["Title"] = "Home Page";
 }
 
-<!-- PAGE TITLE CARD -->
-<div class="card shadow mb-3">
+<body class="bg-secondary bg-opacity-10">
+
+<!-- HEADER CARD -->
+<div class="card bg-white border border-secondary border-opacity-25 shadow-sm mb-3 rounded-3">
 
     <div class="card-body">
 
-        <h1>Lost Property Management System</h1>
+        <h1 class="text-primary">Lost Property Management System</h1>
 
         <p>
             Welcome to the lost property webapp. This system helps students report items they have lost
@@ -27,19 +29,18 @@
 
 </div>
 
-<!-- MAIN DASHBOARD ROW -->
-<div class="d-flex gap-4">
+<!-- MAIN DASHBOARD -->
+<div class="row g-4">
 
-    <!-- LEFT COLUMN: CAROUSEL CARD -->
-    <div style="width:60%;">
+    <!-- LEFT: CAROUSEL -->
+    <div class="col-md-7">
 
-        <div class="card shadow">
+        <div class="card bg-white border border-secondary border-opacity-25 shadow-sm rounded-3">
 
             <div class="card-body p-2">
 
-                <!-- CAROUSEL -->
                 <div id="demo"
-                     class="carousel slide border border-dark border-5 rounded overflow-hidden"
+                     class="carousel slide border border-secondary border-opacity-25 rounded overflow-hidden shadow-sm"
                      data-bs-ride="carousel"
                      style="height:60%;">
 
@@ -78,11 +79,11 @@
 
                     <!-- controls -->
                     <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon bg-dark rounded-circle p-3"></span>
+                        <span class="carousel-control-prev-icon bg-primary rounded-circle p-3"></span>
                     </button>
 
                     <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-                        <span class="carousel-control-next-icon bg-dark rounded-circle p-3"></span>
+                        <span class="carousel-control-next-icon bg-primary rounded-circle p-3"></span>
                     </button>
 
                 </div>
@@ -93,42 +94,42 @@
 
     </div>
 
-    <!-- RIGHT COLUMN -->
-    <div style="width:40%;" class="d-flex flex-column gap-4">
+    <!-- RIGHT SIDE -->
+    <div class="col-md-5 d-flex flex-column gap-4">
 
         <!-- NAVIGATION CARD -->
-        <div class="card shadow">
+        <div class="card bg-white border border-secondary border-opacity-25 shadow-sm rounded-3">
 
             <div class="card-body">
 
-                <h4>Navigation</h4>
+                <h4 class="text-primary">Navigation</h4>
 
                 <ul class="list-unstyled d-flex flex-column gap-3">
 
                     <li>
                         <a asp-controller="LostItems" asp-action="Index"
-                           class="btn btn-primary w-100">
+                           class="btn btn-primary w-100 shadow-sm">
                             View Lost Items
                         </a>
                     </li>
 
                     <li>
                         <a asp-controller="Claims" asp-action="Index"
-                           class="btn btn-primary w-100">
+                           class="btn btn-primary w-100 shadow-sm">
                             View Claims
                         </a>
                     </li>
 
                     <li>
                         <a asp-controller="Admin" asp-action="Index"
-                           class="btn btn-primary w-100">
+                           class="btn btn-primary w-100 shadow-sm">
                             Admin Panel
                         </a>
                     </li>
 
                 </ul>
 
-                <p>
+                <p class="text-dark text-opacity-75">
                     Admin panel is mostly for staff only, students normally don’t use it.
                 </p>
 
@@ -137,23 +138,23 @@
         </div>
 
         <!-- HOW IT WORKS CARD -->
-        <div class="card shadow">
+        <div class="card bg-white border border-secondary border-opacity-25 shadow-sm rounded-3">
 
             <div class="card-body">
 
-                <h4>How It Works</h4>
+                <h4 class="text-primary">How It Works</h4>
 
-                <p>
+                <p class="text-dark text-opacity-75">
                     If you are a student and have lost an item, register a claim in the system.
                     Staff will review it and contact you via email if the item is found.
                 </p>
 
-                <p>
+                <p class="text-dark text-opacity-75">
                     You can search for lost items and submit claims for them.
                     Staff handle matching and returning items.
                 </p>
 
-                <p>
+                <p class="text-dark text-opacity-75">
                     Everything is stored digitally so nothing gets lost or forgotten.
                 </p>
 
@@ -164,3 +165,5 @@
     </div>
 
 </div>
+
+</body>Z
