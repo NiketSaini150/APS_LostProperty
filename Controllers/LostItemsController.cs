@@ -285,6 +285,7 @@ namespace APS_LostProperty.Controllers
         // POST: Delete
         // actually deletes item from database
         [HttpPost, ActionName("Delete")]
+
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

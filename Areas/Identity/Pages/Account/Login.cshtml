@@ -35,22 +35,31 @@
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
                 </div>
+
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                    
-                    <ul class="d-flex gap-3 list-unstyled ">
+                    <div class="list-unstyled">
+                        <ul>
+
+                        </ul>
+                        
+                       
+                    </div>
+                    <ul class="d-flex gap-5 list-unstyled ">
                             <li>
                                 <a id="forgot-password" asp-page="./ForgotPassword" class="btn btn-primary">
                                     Forgot your password?
                                 </a>
                             </li>
+
                             <li>
                                 <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="btn btn-primary">
                                     Register as a new user
                                 </a>
                             </li>
                             <li>
-                                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="btn btn-primary">
+                                <a 
+                                    id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="btn btn-primary">
                                     Resend email confirmation
                                 </a>
                             </li>
@@ -62,7 +71,6 @@
     <div class="col-md-6 col-md-offset-4">
         <section>
         
-            <hr />
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
