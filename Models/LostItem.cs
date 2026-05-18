@@ -86,11 +86,21 @@ namespace APS_LostProperty.Models
         // Ensures that the date entered is not in the future
         public static ValidationResult ValidateDateFound(DateTime date, ValidationContext context)
         {
-            if (date.Date <= DateTime.Today)
+
+            var PastDate = DateTime.Today.AddMonths(-3);
+            if (date.Date >= DateTime.Today)
             {
-                return ValidationResult.Success;
+                return new ValidationResult("Date found cannot be in the future.");
+           
             }
-            return new ValidationResult("Date found cannot be in the future.");
+
+            if (date.Date < PastDate)
+            {
+                return new ValidationResult("Date found cannot be older than 3 months.");
+            }
+
+            return ValidationResult.Success;
+
         }
     }
 }

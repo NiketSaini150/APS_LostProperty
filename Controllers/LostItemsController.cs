@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace APS_LostProperty.Controllers
@@ -102,6 +103,7 @@ namespace APS_LostProperty.Controllers
                 "LocationName"
             );
 
+
             return View();
         }
         // GET: LostItems/Details/5
@@ -159,6 +161,7 @@ namespace APS_LostProperty.Controllers
                 "LocationName",
                 lostItem.LocationID
             );
+
 
             // return same page with errors
             return View(lostItem);

@@ -156,15 +156,13 @@ namespace APS_LostProperty.Controllers
 
             // date validation rules
             var today = DateTime.Today;
-            var oneYearAgo = today.AddYears(-1);
+            var oneYearAgo = today.AddMonths(-3);
 
-            // check if date is in the future
             if (claim.DateLost > today)
-                ModelState.AddModelError("DateLost", "Date Cannot Be in The Future");
+                ModelState.AddModelError("DateLost", "Date Lost cannot be in The Future! ");
 
-            // check if date is too old
             if (claim.DateLost < oneYearAgo)
-                ModelState.AddModelError("DateLost", "date too old");
+                ModelState.AddModelError("DateLost", "Date Lost cannot be more than 3 months in the Past!");
 
             // if everything is valid, save to database
             if (ModelState.IsValid)
@@ -236,13 +234,13 @@ namespace APS_LostProperty.Controllers
 
             // date validation
             var today = DateTime.Today;
-            var oneYearAgo = today.AddYears(-1);
+            var oneYearAgo = today.AddMonths(-3);
 
             if (claim.DateLost > today)
-                ModelState.AddModelError("DateLost", "invalid");
+                ModelState.AddModelError("DateLost", "Date Lost cannot be in The Future! ");
 
             if (claim.DateLost < oneYearAgo)
-                ModelState.AddModelError("DateLost", "too old");
+                ModelState.AddModelError("DateLost", "Date Lost cannot be more than 3 months in the Past!");
 
             // if valid, update fields
             if (ModelState.IsValid)
