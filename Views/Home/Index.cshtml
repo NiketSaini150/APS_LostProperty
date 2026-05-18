@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.Linq
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -103,6 +104,23 @@
         <div class="card bg-white border border-secondary border-opacity-25 shadow-sm rounded-3">
 
             <div class="card-body">
+
+                    @model IEnumerable< APS_LostProperty.Models.LostItem>
+                   
+          @*  
+                @model IEnumerable< APS_LostProperty.Models.LostItem>
+...
+                    @foreach (var item in Model)
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemName)
+                            
+                            </td>
+                       
+
+                        }
+ *@
+                       
 
                 <h4 class="text-primary">Navigation</h4>
 
