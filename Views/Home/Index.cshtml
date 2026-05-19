@@ -64,7 +64,7 @@
                                  alt="Avondale College">
                         </div>
 
-                        <div class="carousel-item" style="height:100%;">
+                        <div class="carousel-item" style="height:100 %;">
                             <img src="~/Img/Lost property.jpg"
                                  class="d-block w-100"
                                  style="height:100%; object-fit:cover;"
@@ -107,6 +107,7 @@
             <div class="card-body">
 
                     <p>Lost Items at present: @(Model?.Count() ?? 0)</p>
+                    <p> Claimed items presetn : @(Model?.Count()?? 0)</p>
 
 //This is if you are on the index page of LostItem. 
                        
