@@ -1,4 +1,5 @@
 ﻿@using System.Linq
+@model IEnumerable<LostItem>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -105,21 +106,9 @@
 
             <div class="card-body">
 
-                    @model IEnumerable< APS_LostProperty.Models.LostItem>
-                   
-          @*  
-                @model IEnumerable< APS_LostProperty.Models.LostItem>
-...
-                    @foreach (var item in Model)
-                        {
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ItemName)
-                            
-                            </td>
-                       
+                    <p>Lost Items at present: @(Model?.Count() ?? 0)</p>
 
-                        }
- *@
+//This is if you are on the index page of LostItem. 
                        
 
                 <h4 class="text-primary">Navigation</h4>
