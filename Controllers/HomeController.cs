@@ -31,6 +31,9 @@ namespace APS_LostProperty.Controllers
             // total claims submitted by users
             ViewBag.TotalClaims = _context.Claim.Count();
 
+            // total claims that have been claimed by the student.
+            ViewBag.ClaimedClaims = _context.Claim.Count(c => c.Status == ClaimStatus.Collected);
+
             // total categories available in system
             ViewBag.TotalCategories = _context.Category.Count();
 
