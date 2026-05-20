@@ -32,7 +32,7 @@
 
 </div>
 
-<!-- MAIN DASHBOARD -->
+
 <div class="row g-4">
 
     <!-- LEFT: CAROUSEL -->
@@ -99,59 +99,72 @@
 
     </div>
 
-    <!-- RIGHT SIDE -->
+   
     <div class="col-md-5 d-flex flex-column gap-4">
 
         <!-- NAVIGATION CARD -->
-        <div class="card bg-white border border-secondary border-opacity-25 shadow-sm rounded-3">
+     
+            <div class="row">
+                <div class="col-md-4 d-flex">
+                   <div class="card border-secondary shadow-md rounded-3 text-center h-100 w-100">
+                       <div></div>
 
-                <div class="card" style="width: 20rem;">
-                    <p class=" fw-bold  fs-1  text-primary">@(ViewBag.TotalItems ?? 0)</p>
-                    <div class="card-body">
-                        <h5 class="card-title">Total Items</h5>
-                       
-                        <a asp-controller="LostItems" asp-action="Index"
-                           class="btn btn-primary w-100 shadow-sm">
-                            View Lost Items
-                        </a>
+                      <div class="card-body py-5 d-flex flex-column justify-content-center align-items-center">
+
+                       <div class="fs-1 fw-bold text-primary">
+                           @(ViewBag.TotalItems ?? 0)
+                       </div>
+
+                           <h5 class="card-title mt-2">Total Items</h5>
+
+                              <a asp-controller="LostItems" asp-action="Index"
+                                class="btn btn-primary w-75 mt-auto">
+                                      View Lost Items
+                              </a>
+                      </div>
+                    </div>
+                </div>
+                
+                <div class=" col-md-4 d-flex">
+                    <div class="card border border-secondary shadow-md rounded-3 text-center h-200 w-100">
+
+                       <div class="card-body py-5 d-flex flex-column justify-content-center align-items-center">
+
+                           <div class="fs-1 fw-bold text-primary">
+                                @(ViewBag.TotalClaims ?? 0)
+                           </div>
+                           <h5 class="card-title mt-2"> Total Claims Made</h5>
+                            <a asp-controller="Claims" asp-action="Index"
+                               class="btn btn-primary w-75 mt-auto">
+                                View Claims
+                            </a>
+                       </div>
                     </div>
                 </div>
 
-                <div class="card bg-white border border-secondary border-opacity-25 shadow-sm rounded-3">
-                    <div class="card" style="width: 18rem;">
-                        <p class=" fw-bold  fs-1  text-primary">@(ViewBag.TotalClaims ?? 0)</p>
-                        <div class="card-body">
-                            <h5 class="card-title">Total Claims</h5>
-
-                            <a asp-controller="LostItems" asp-action="Index"
-                               class="btn btn-primary w-100 shadow-sm">
-                                View Lost Items
+                <div class=" col-md-4 d-flex">
+                    <div class="card border border-secondary shadow-md rounded-3 text-center h-100 w-100">
+                        <div class="card-body py-5 d-flex flex-column justify-content-center align-items-center">
+                            <div class="fs-1 fw-bold text-primary">
+                                @(ViewBag.ClaimedClaims ?? 0)
+                            </div>
+                            <h5 class="card-title mt-2"> Total Claims Claimed</h5>
+                            <a asp-controller="Claims" asp-action="Index"
+                               class="btn btn-primary w-75 mt-auto">
+                                View Claims Claimed 
                             </a>
                         </div>
                     </div>
-
-                    <div class="card bg-white border border-secondary border-opacity-25 shadow-sm rounded-3">
-                        <div class="card" style="width: 18rem;">
-                            <p class=" fw-bold  fs-1  text-primary">@(ViewBag.ClaimedClaims ?? 0)</p>
-                            <div class="card-body">
-                                <h5 class="card-title">Total Claims Claimed </h5>
-
-                                <a asp-controller="LostItems" asp-action="Index"
-                                   class="btn btn-primary w-100 shadow-sm">
-                                    View Lost Items
-                                </a>
-                            </div>
-                        </div>
+                </div>
 
 
-            </div>
-
-        </div>
+             
+       
 
         <!-- HOW IT WORKS CARD -->
         <div class="card bg-white border border-secondary border-opacity-25 shadow-sm rounded-3">
 
-            <div class="card-body">
+            <div class="card-body w-100 h-70">
 
                 <h4 class="text-primary">How It Works</h4>
 
