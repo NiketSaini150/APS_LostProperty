@@ -55,7 +55,8 @@
                         @* STAFF ONLY LINKS *@
                         @if (User.IsInRole("Staff"))
                         {
-                            <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Categories" ? "active border border-primary rounded" : "")" asp-controller="Categories" asp-action="Index">Categories</a>
+                            <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Categories" ? "active border border-primary rounded" : "")"
+                            asp-controller="Categories" asp-action="Index">Categories</a>
 
                             <li class="nav-item">
                                 <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Locations" ? "active border border-primary rounded" : "")"
