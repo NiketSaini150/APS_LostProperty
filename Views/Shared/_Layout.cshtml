@@ -21,7 +21,7 @@
 
     <header>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark rounded">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark rounded fixed-top">
 
             <div class="container-fluid">
                 <!-- Brand -->
@@ -32,7 +32,7 @@
                 </a>
 
                 <!-- Mobile toggle -->
-                <button class="navbar-toggler nav-link text-light" type="button" data-bs-toggle="collapse"
+                <button class="navbar-toggler nav-link text-light sticky-top" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent"
                         aria-controls="navbarSupportedContent"
                         aria-expanded="false"
@@ -41,7 +41,7 @@
                 </button>
 
                 <!-- Links -->
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse " id="navbarSupportedContent ">
 
 
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -126,7 +126,7 @@
 
     <!-- Main content -->
     <div class="container-fluid">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3 pt-5 ">
             @RenderBody()
 
         </main>
