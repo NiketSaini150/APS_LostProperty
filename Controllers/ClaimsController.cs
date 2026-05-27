@@ -36,11 +36,18 @@ namespace APS_LostProperty.Controllers
 
             // start building query from Claim table
             // IQueryable means we can keep adding filters before actually running SQL
-            var claimsQuery = _context.Claim
-                .Include(c => c.IdentityUser)        // loads related user data (email, username)
-                .Include(c => c.MatchedLostItem)     // loads matched lost item info
-                .AsQueryable();                      // keeps it flexible for filtering
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            var claimsQuery = _context.Claim
+                .Include(c => c.IdentityUser)
+                .Include(c => c.MatchedLostItem)
+                .AsQueryable();
+
+            // if user is NOT staff, only show their own claims
+            if (!User.IsInRole("Staff"))
+            {
+                claimsQuery = claimsQuery.Where(c => c.UserID == userId);
+            }
             // ---------------- SEARCH SECTION ----------------
 
             // check if user typed anything in the search bar

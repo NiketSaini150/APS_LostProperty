@@ -80,3 +80,7 @@ app.MapControllerRoute(
 
 // Run application
 app.Run();
+// to do list 
+// make it so user who is logged in is only able to see their cliam and they can edit and delete it. but the admin can see all cliams.
+// add auto email so if the enum is changed to found auto emial is sent to the email that made tahta claim
+// add phone number to regist. 
