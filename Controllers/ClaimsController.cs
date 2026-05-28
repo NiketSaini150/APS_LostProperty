@@ -213,12 +213,14 @@ namespace APS_LostProperty.Controllers
                 return NotFound();
 
             // load dropdown of lost items (sorted alphabetically)
-            ViewData["MatchedLostItemID"] =
-                new SelectList(
-                    _context.LostItem.OrderBy(l => l.ItemName),
-                    "LostItemID",
-                    "ItemName",
-                    claim.MatchedLostItemID
+            ViewData["MatchedLostItemID"] = new SelectList(
+   _context.LostItem
+   .Where(l => !l.IsClaimed)   // only show available items
+   .OrderBy(l => l.ItemName),
+    "LostItemID",
+    "ItemName",
+    claim.MatchedLostItemID
+    
                 );
 
             return View(claim);
@@ -306,12 +308,13 @@ namespace APS_LostProperty.Controllers
 
             // reload dropdown if validation fails
             ViewData["MatchedLostItemID"] = new SelectList(
-                _context.LostItem.OrderBy(l => l.ItemName),
-                "LostItemID",
-                "ItemName",
-                claim.MatchedLostItemID
-            );
-
+              _context.LostItem
+              .Where(l => !l.IsClaimed)   // only show available items
+              .OrderBy(l => l.ItemName),
+               "LostItemID",
+               "ItemName",
+               claim.MatchedLostItemID
+               );
             return View(claim);
         }
 
