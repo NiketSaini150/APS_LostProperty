@@ -57,9 +57,15 @@
             <!-- Matched Lost Item Dropdown -->
             <div class="form-group">
                 <label asp-for="MatchedLostItemID" class="control-label"></label>
-                <!-- Dropdown bound to MatchedLostItemID -->
-                <!-- ViewData["MatchedLostItemID"] is populated in the controller -->
-                <select asp-for="MatchedLostItemID" class="form-control" asp-items="ViewBag.MatchedLostItemID"></select>
+
+                <select asp-for="MatchedLostItemID"
+                        class="form-control"
+                        asp-items="ViewBag.MatchedLostItemID">
+
+                    <option value="">-- No Matching Item --</option>
+
+                </select>
+
                 <span asp-validation-for="MatchedLostItemID" class="text-danger"></span>
             </div>
 

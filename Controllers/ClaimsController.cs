@@ -243,7 +243,7 @@ namespace APS_LostProperty.Controllers
             if (existing == null)
                 return NotFound();
 
-            var oldstatus = existing.Status;
+           
 
             existing .Status =claim.Status;
             // keep original system values
@@ -266,6 +266,8 @@ namespace APS_LostProperty.Controllers
             // if valid, update fields
             if (ModelState.IsValid)
             {
+
+                var oldstatus = existing.Status;
                 existing.ClaimedItemName= claim.ClaimedItemName;
                 existing.ClaimedDescription = claim.ClaimedDescription;
                 existing.DateLost = claim.DateLost;
@@ -273,8 +275,20 @@ namespace APS_LostProperty.Controllers
                 existing.Status = claim.Status;
 
                 await _context.SaveChangesAsync();
+                existing.Status = claim.Status;
 
-                if (oldstatus == ClaimStatus.Approved)
+                if (existing.MatchedLostItemID != null)
+                {
+                    var lostItem = await _context.LostItem
+                        .FirstOrDefaultAsync(l => l.LostItemID == existing.MatchedLostItemID);
+
+                    if (lostItem != null)
+                    {
+                        lostItem.IsClaimed = claim.Status == ClaimStatus.Collected;
+                    }
+                }
+                await _context.SaveChangesAsync();
+                if ( oldstatus == ClaimStatus.Approved && oldstatus != ClaimStatus.Approved)
                 {
                     var user = await _userManager.FindByIdAsync(existing.UserID);
                     await _emailSender.SendEmailAsync(
