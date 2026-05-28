@@ -39,6 +39,7 @@ namespace APS_LostProperty.Controllers
         // this loads the main claims page (list view)
         // also supports search + pagination
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Index(string searchString, int page = 1)
         {
             // how many items we want per page (pagination size)

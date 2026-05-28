@@ -104,12 +104,13 @@
                            @(ViewBag.TotalItems ?? 0)
                        </div>
 
-                           <h5 class="card-title mt-2">Total Items</h5>
-
+                           <h5 class="card-title mt-2">Total Items Lost</h5>
+                                @if (User.IsInRole("Staff")){
                               <a asp-controller="LostItems" asp-action="Index"
                                 class="btn btn-primary w-75 mt-auto">
                                       View Lost Items
                               </a>
+                                }
                       </div>
                     </div>
                 </div>
@@ -123,10 +124,12 @@
                                 @(ViewBag.TotalClaims ?? 0)
                            </div>
                            <h5 class="card-title mt-2"> Total Claims Made</h5>
+                                @if (User.Identity != null && User.Identity.IsAuthenticated){
                             <a asp-controller="Claims" asp-action="Index"
                                class="btn btn-primary w-75 mt-auto">
                                 View Claims
                             </a>
+                                }
                        </div>
                     </div>
                 </div>
@@ -138,10 +141,12 @@
                                 @(ViewBag.ClaimedClaims ?? 0)
                             </div>
                             <h5 class="card-title mt-2"> Total Claims Claimed</h5>
+                                @if (User.IsInRole("Staff")){
                             <a asp-controller="LostItems" asp-action="Index"
                                class="btn btn-primary w-75 mt-auto">
-                                View Claims Claimed 
+                                View Claimed Items
                             </a>
+                                }
                         </div>
                     </div>
                 </div>
