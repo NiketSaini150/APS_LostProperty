@@ -1,6 +1,7 @@
+using APS_LostProperty.Areas.Identity.Data;
+using APS_LostProperty.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using APS_LostProperty.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,8 @@ builder.Services.AddDefaultIdentity<User>(options =>
 // Add MVC and Razor Pages services
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+
 
 var app = builder.Build();
 

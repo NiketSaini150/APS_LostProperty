@@ -1,6 +1,10 @@
 ﻿namespace APS_LostProperty.Services
 {
-    public class EmailSender
+    public interface IEmailSender
     {
+
+        Task SendEmailAsync(string email, string subject, string message);
+
     }
+        
 }

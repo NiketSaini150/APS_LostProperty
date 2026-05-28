@@ -1,10 +1,16 @@
 ﻿using APS_LostProperty.Areas.Identity.Data;
+using APS_LostProperty.Migrations;
 using APS_LostProperty.Models;
+using APS_LostProperty.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
 using System;
+
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,12 +23,16 @@ namespace APS_LostProperty.Controllers
     {
         // database context (this lets us talk to SQL tables like Claim, Users, LostItem etc.)
         private readonly DBContext _context;
+        private readonly IEmailSender _emailSender;
+        private readonly UserManager<User> _userManager;
 
         // constructor runs when controller starts
         // dependency injection gives us database access
-        public ClaimsController(DBContext context)
+        public ClaimsController(DBContext context, IEmailSender emailSender, UserManager<User> userManager)
         {
             _context = context;
+            _emailSender = emailSender;
+            _userManager = userManager;
         }
 
         // GET: Claims
@@ -222,6 +232,7 @@ namespace APS_LostProperty.Controllers
         public async Task<IActionResult> Edit(int id,
             [Bind("ClaimID,ClaimedItemName,ClaimedDescription,DateLost,MatchedLostItemID,Status")] APS_LostProperty.Models.Claim claim)
         {
+            
             // check id matches claim
             if (id != claim.ClaimID)
                 return NotFound();
@@ -232,6 +243,9 @@ namespace APS_LostProperty.Controllers
             if (existing == null)
                 return NotFound();
 
+            var oldstatus = existing.Status;
+
+            existing .Status =claim.Status;
             // keep original system values
             claim.UserID = existing.UserID;
             claim.DateSubmitted = existing.DateSubmitted;
@@ -259,6 +273,20 @@ namespace APS_LostProperty.Controllers
                 existing.Status = claim.Status;
 
                 await _context.SaveChangesAsync();
+
+                if (oldstatus == ClaimStatus.Approved)
+                {
+                    var user = await _userManager.FindByIdAsync(existing.UserID);
+                    await _emailSender.SendEmailAsync(
+                        existing.IdentityUser.Email,
+                        "Claim Update: " + claim.ClaimedItemName,
+                        $"Dear {existing.IdentityUser.UserName},\n\n" +
+                        $"The status of your claim for '{claim.ClaimedItemName}' has been updated to '{claim.Status}'.\n\n" +
+                        "This means that a Staff has approved your claim. your item is now ready to be collected." +
+                        "Please log in to your account for more details.\n\n" +
+                        "Best regards,\nAPS Lost Property Team"
+                    );
+                }
                 return RedirectToAction(nameof(Index));
             }
 
