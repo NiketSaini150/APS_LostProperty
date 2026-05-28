@@ -186,6 +186,24 @@ namespace APS_LostProperty.Controllers
             {
                 _context.Add(claim);
                 await _context.SaveChangesAsync();
+
+                // send confirmation email when claim is created
+                if (!string.IsNullOrEmpty(claim.UserID))
+                {
+                    var user = await _userManager.FindByIdAsync(claim.UserID);
+
+                    if (user?.Email != null)
+                    {
+                        await _emailSender.SendEmailAsync(
+                            user.Email,
+                            "Claim Submitted",
+                            $"Hi {user.UserName},\n\n" +
+                            $"Your claim for '{claim.ClaimedItemName}' has been successfully SUBMITTED.\n\n" +
+                            "Our staff will review your claim and update you once it's processed.\n\n" +
+                            "APS Lost Property Team"
+                        );
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
 
@@ -269,16 +287,30 @@ namespace APS_LostProperty.Controllers
             if (ModelState.IsValid)
             {
 
-                var oldstatus = existing.Status;
-                existing.ClaimedItemName= claim.ClaimedItemName;
+                var oldStatus = existing.Status;
+                var oldLostItemId = existing.MatchedLostItemID;
+                existing.ClaimedItemName = claim.ClaimedItemName;
                 existing.ClaimedDescription = claim.ClaimedDescription;
                 existing.DateLost = claim.DateLost;
                 existing.MatchedLostItemID = claim.MatchedLostItemID;
                 existing.Status = claim.Status;
 
-                await _context.SaveChangesAsync();
-                existing.Status = claim.Status;
+              
+                if (oldLostItemId != null)
+                {
+                    var oldItem = await _context.LostItem
+                        .FirstOrDefaultAsync(l => l.LostItemID == oldLostItemId);
 
+                    if (oldItem != null)
+                    {
+                        // only free it if claim is no longer Collected
+                        if (oldStatus == ClaimStatus.Collected && claim.Status != ClaimStatus.Collected)
+                        {
+                            oldItem.IsClaimed = false;
+                        }
+                    }
+                }
+              
                 if (existing.MatchedLostItemID != null)
                 {
                     var lostItem = await _context.LostItem
@@ -290,7 +322,8 @@ namespace APS_LostProperty.Controllers
                     }
                 }
                 await _context.SaveChangesAsync();
-                if ( oldstatus == ClaimStatus.Approved && oldstatus != ClaimStatus.Approved)
+
+                if ( oldStatus == ClaimStatus.Approved && oldStatus != ClaimStatus.Approved)
                 {
                     var user = await _userManager.FindByIdAsync(existing.UserID);
                     await _emailSender.SendEmailAsync(
@@ -303,6 +336,23 @@ namespace APS_LostProperty.Controllers
                         "Best regards,\nAPS Lost Property Team"
                     );
                 }
+
+                if (claim.Status == ClaimStatus.Rejected && oldStatus != ClaimStatus.Rejected)
+                {
+                    await _emailSender.SendEmailAsync(
+                        existing.IdentityUser.Email,
+                        "Claim Rejected",
+                        $"Hi {existing.IdentityUser.UserName},\n\n" +
+                        $"Unfortunately, your claim for '{existing.ClaimedItemName}' has been REJECTED.\n\n" +
+                        "This usually happens if the item could not be verified or matched.\n\n" +
+                        "You may submit a new claim if needed.\n\n" +
+                        "APS Lost Property Team"
+                    );
+                }
+
+              
+
+               
                 return RedirectToAction(nameof(Index));
             }
 
