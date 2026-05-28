@@ -24,6 +24,8 @@ namespace APS_LostProperty.Controllers
             ViewBag.TotalClaims = _context.Claim.Count();
             ViewBag.TotalCategories = _context.Category.Count();
             ViewBag.TotalLocations = _context.Location.Count();
+            ViewBag.ClaimedClaims = _context.LostItem
+    .Count(c => c.IsClaimed == true);
 
             // list of SQL queries shown to admin
             ViewBag.Queries = new List<object>

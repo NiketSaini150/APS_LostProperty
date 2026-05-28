@@ -138,7 +138,7 @@
                                 @(ViewBag.ClaimedClaims ?? 0)
                             </div>
                             <h5 class="card-title mt-2"> Total Claims Claimed</h5>
-                            <a asp-controller="Claims" asp-action="Index"
+                            <a asp-controller="LostItems" asp-action="Index"
                                class="btn btn-primary w-75 mt-auto">
                                 View Claims Claimed 
                             </a>
@@ -159,28 +159,28 @@
 
                 <h4 class=" fs-2 text-primary">How It Works</h4>
 
-                <p class=" fs-4  text-dark text-opacity-75">
-                    This is a WebApp that Helps students Who have lost their items.
-                    To Start you Must Register, This will allow you to access the claim page.
-
-                    If you are a student and have lost an item, register a claim in the system.
-                    Staff will review it and contact you via email if the item is found.
-                </p>
-
-                <p class=" fs-4 text-dark text-opacity-75">
-                    You can search for lost items and submit claims for them.
-                    Staff handle matching and returning items.
+                <p class="fs-4 text-dark text-opacity-75">
+                    Welcome to the Lost Property System. This web application helps students quickly report and recover lost items.
+                    To get started, you must register an account, which will give you access to the claims page and other system features.
                 </p>
 
                 <p class="fs-4 text-dark text-opacity-75">
-                    Everything is stored digitally so nothing gets lost or forgotten.
+                    If you are a student who has lost an item, you can submit a claim through the system.
+                    Staff members will review your request, attempt to match it with found items,
+                    and contact you via email if a match is found.
+                    You can also browse and search through reported lost items at any time.
                 </p>
 
+                <p class="fs-4 text-dark text-opacity-75">
+                    All records are stored digitally, making the process faster, more organised, 
+                    and reducing the chance of anything being missed or forgotten.
+                </p>
             </div>
 
         </div>
 
     </div>
+
 
 </div>
 
