@@ -187,23 +187,32 @@ namespace APS_LostProperty.Controllers
                 _context.Add(claim);
                 await _context.SaveChangesAsync();
 
-                // send confirmation email when claim is created
-                if (!string.IsNullOrEmpty(claim.UserID))
+                if (ModelState.IsValid)
                 {
-                    var user = await _userManager.FindByIdAsync(claim.UserID);
+                    _context.Add(claim);
+                    await _context.SaveChangesAsync();
 
-                    if (user?.Email != null)
+               
+                    if (!string.IsNullOrEmpty(claim.UserID))
                     {
-                        await _emailSender.SendEmailAsync(
-                            user.Email,
-                            "Claim Submitted",
-                            $"Hi {user.UserName},\n\n" +
-                            $"Your claim for '{claim.ClaimedItemName}' has been successfully SUBMITTED.\n\n" +
-                            "Our staff will review your claim and update you once it's processed.\n\n" +
-                            "APS Lost Property Team"
-                        );
+                        var user = await _userManager.FindByIdAsync(claim.UserID);
+
+                        if (user?.Email != null)
+                        {
+                            await _emailSender.SendEmailAsync(
+                                user.Email,
+                                "Claim Submitted",
+                                $"Hi {user.UserName},\n\n" +
+                                $"Your claim for '{claim.ClaimedItemName}' has been SUBMITTED successfully.\n\n" +
+                                "Our staff will now review your claim.\n\n" +
+                                "APS Lost Property Team"
+                            );
+                        }
                     }
+
+                    return RedirectToAction(nameof(Index));
                 }
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -250,30 +259,24 @@ namespace APS_LostProperty.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Staff")]
         public async Task<IActionResult> Edit(int id,
-            [Bind("ClaimID,ClaimedItemName,ClaimedDescription,DateLost,MatchedLostItemID,Status")] APS_LostProperty.Models.Claim claim)
+         [Bind("ClaimID,ClaimedItemName,ClaimedDescription,DateLost,MatchedLostItemID,Status")]
+    APS_LostProperty.Models.Claim claim)
         {
-            
-            // check id matches claim
             if (id != claim.ClaimID)
                 return NotFound();
 
-            // get existing record from database
-            var existing = await _context.Claim.FindAsync(id);
+            var existing = await _context.Claim
+                .Include(c => c.IdentityUser)
+                .FirstOrDefaultAsync(c => c.ClaimID == id);
 
             if (existing == null)
                 return NotFound();
 
-           
+            var oldStatus = existing.Status;
+            var oldLostItemId = existing.MatchedLostItemID;
 
-            existing .Status =claim.Status;
-            // keep original system values
-            claim.UserID = existing.UserID;
-            claim.DateSubmitted = existing.DateSubmitted;
-
-            // ignore validation for system field
             ModelState.Remove("UserID");
 
-            // date validation
             var today = DateTime.Today;
             var oneYearAgo = today.AddMonths(-3);
 
@@ -283,33 +286,27 @@ namespace APS_LostProperty.Controllers
             if (claim.DateLost < oneYearAgo)
                 ModelState.AddModelError("DateLost", "Date Lost cannot be more than 3 months in the Past!");
 
-            // if valid, update fields
             if (ModelState.IsValid)
             {
-
-                var oldStatus = existing.Status;
-                var oldLostItemId = existing.MatchedLostItemID;
+                // update fields
                 existing.ClaimedItemName = claim.ClaimedItemName;
                 existing.ClaimedDescription = claim.ClaimedDescription;
                 existing.DateLost = claim.DateLost;
                 existing.MatchedLostItemID = claim.MatchedLostItemID;
                 existing.Status = claim.Status;
 
-              
-                if (oldLostItemId != null)
+               
+                if (oldLostItemId != null && oldLostItemId != existing.MatchedLostItemID)
                 {
                     var oldItem = await _context.LostItem
                         .FirstOrDefaultAsync(l => l.LostItemID == oldLostItemId);
 
                     if (oldItem != null)
                     {
-                        // only free it if claim is no longer Collected
-                        if (oldStatus == ClaimStatus.Collected && claim.Status != ClaimStatus.Collected)
-                        {
-                            oldItem.IsClaimed = false;
-                        }
+                        oldItem.IsClaimed = false;
                     }
                 }
+
               
                 if (existing.MatchedLostItemID != null)
                 {
@@ -321,53 +318,53 @@ namespace APS_LostProperty.Controllers
                         lostItem.IsClaimed = claim.Status == ClaimStatus.Collected;
                     }
                 }
+
                 await _context.SaveChangesAsync();
 
-                if ( oldStatus == ClaimStatus.Approved && oldStatus != ClaimStatus.Approved)
+          
+                if (oldStatus != ClaimStatus.Approved && claim.Status == ClaimStatus.Approved)
                 {
                     var user = await _userManager.FindByIdAsync(existing.UserID);
-                    await _emailSender.SendEmailAsync(
-                        existing.IdentityUser.Email,
-                        "Claim Update: " + claim.ClaimedItemName,
-                        $"Dear {existing.IdentityUser.UserName},\n\n" +
-                        $"The status of your claim for '{claim.ClaimedItemName}' has been updated to '{claim.Status}'.\n\n" +
-                        "This means that a Staff has approved your claim. your item is now ready to be collected." +
-                        "Please log in to your account for more details.\n\n" +
-                        "Best regards,\nAPS Lost Property Team"
-                    );
+
+                    if (user?.Email != null)
+                    {
+                        await _emailSender.SendEmailAsync(
+                            user.Email,
+                            "Claim Update: " + claim.ClaimedItemName,
+                            $"Dear {user.UserName},\n\n" +
+                            $"Your claim for '{existing.ClaimedItemName}' has been APPROVED.\n\n" +
+                            "You can now collect your item.\n\n" +
+                            "APS Lost Property Team"
+                        );
+                    }
                 }
 
-                if (claim.Status == ClaimStatus.Rejected && oldStatus != ClaimStatus.Rejected)
+             
+              
+                if (oldStatus != ClaimStatus.Rejected && claim.Status == ClaimStatus.Rejected)
                 {
                     await _emailSender.SendEmailAsync(
                         existing.IdentityUser.Email,
                         "Claim Rejected",
                         $"Hi {existing.IdentityUser.UserName},\n\n" +
-                        $"Unfortunately, your claim for '{existing.ClaimedItemName}' has been REJECTED.\n\n" +
-                        "This usually happens if the item could not be verified or matched.\n\n" +
-                        "You may submit a new claim if needed.\n\n" +
+                        $"Your claim for '{existing.ClaimedItemName}' has been REJECTED.\n\n" +
                         "APS Lost Property Team"
                     );
                 }
 
-              
-
-               
                 return RedirectToAction(nameof(Index));
             }
 
-            // reload dropdown if validation fails
+            // reload dropdown
             ViewData["MatchedLostItemID"] = new SelectList(
-              _context.LostItem
-              .Where(l => !l.IsClaimed)   // only show available items
-              .OrderBy(l => l.ItemName),
-               "LostItemID",
-               "ItemName",
-               claim.MatchedLostItemID
-               );
+                _context.LostItem.Where(l => !l.IsClaimed).OrderBy(l => l.ItemName),
+                "LostItemID",
+                "ItemName",
+                claim.MatchedLostItemID
+            );
+
             return View(claim);
         }
-
         // GET: Delete
         // shows confirmation page before deleting claim
         [HttpGet]
