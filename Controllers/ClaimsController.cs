@@ -187,11 +187,6 @@ namespace APS_LostProperty.Controllers
                 _context.Add(claim);
                 await _context.SaveChangesAsync();
 
-                if (ModelState.IsValid)
-                {
-                    _context.Add(claim);
-                    await _context.SaveChangesAsync();
-
                
                     if (!string.IsNullOrEmpty(claim.UserID))
                     {
@@ -210,8 +205,7 @@ namespace APS_LostProperty.Controllers
                         }
                     }
 
-                    return RedirectToAction(nameof(Index));
-                }
+                 
 
                 return RedirectToAction(nameof(Index));
             }
