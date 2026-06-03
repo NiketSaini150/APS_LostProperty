@@ -15,16 +15,17 @@
     </div>
 </form>
 <p>
-    <a asp-action="Create" class="btn btn-success">Create New</a>
+    <a asp-action="Create" class="btn btn-success btn-lg ">Create New</a>
 </p>
 
-<table class="table table-striped">
-    <thead>
+<table class=" fs-4 table table-hover table-striped mx-auto" style="width:95rem">
+    <thead class="rounded-pill" >
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.LocationName)
+            <th class="bg-dark  text-light text-start" >
+                Location Name
+             @*    @Html.DisplayNameFor(model => model.LocationName) *@
             </th>
-            <th>Actions</th>
+            <th class="bg-dark text-light text-end">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -34,10 +35,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.LocationName)
                 </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.LocationID" class="btn btn-light">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.LocationID" class="btn btn-light">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.LocationID" class="btn btn-danger">Delete</a>
+                <td class="text-end ">
+                    <div class="btn-group" role="group" aria-label="Actions ">
+                        <a asp-action="Edit" asp-route-id="@item.LocationID" class="btn btn-light btn-lg">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.LocationID" class="btn btn-light btn-lg">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.LocationID" class="btn btn-danger btn-lg">Delete</a>
+                    </div>
                 </td>
             </tr>
         }
