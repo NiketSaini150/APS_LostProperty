@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
+<div class="mx-auto" style="width:70%" >
 <h1 >Claims</h1> 
 
 <form asp-action="Index" method="get" class="mb-4">
@@ -21,7 +22,6 @@
         <!-- search button -->
         <button type="submit" class="btn btn-primary">Search</button>
 
-        <!-- clears search and resets page -->
       
         <a asp-action="Index" class="btn btn-outline-secondary">Clear</a> 
 
@@ -29,51 +29,49 @@
 </form>
 <div class="row align-items-center mb-3">
 
-    <!-- LEFT -->
     <div class="col-md-4">
-        <a asp-action="Create" class="btn btn-success">
+            <a asp-action="Create" class="btn btn-success  btn-lg">
              Create New
         </a>
     </div>
 
-    <!-- CENTER -->
-    <div class="col-md-4 text-center">
-        <h5 class="mb-0">All Claims</h5>
-    </div>
+    
+   
 
-    <!-- RIGHT (empty just for spacing) -->
+  
     <div class="col-md-4"></div>
 
 </div>
 
 
     
-    <table class="table table-striped table-hover align-middle mb-0">
+    <table class="table fs-4 table-striped table-hover align-middle mb-0">
         
-        <thead >
-            
-        <tr>
-            <th>
+        <thead class="rounded-pill">
+
+            <tr >
+                <th class="bg-dark text-light text-start">
                 @Html.DisplayNameFor(model => model.IdentityUser )
             </th>
-            <th>
+                <th class="bg-dark text-light text-start">
                 @Html.DisplayNameFor(model => model.ClaimedItemName)
             </th>
-            <th>
+            <th class="bg-dark text-light text-start">
                 @Html.DisplayNameFor(model => model.ClaimedDescription)
-            </th>
-            <th>
+            </th >
+            <th class="bg-dark text-light text-start">
                 @Html.DisplayNameFor(model => model.DateLost)
             </th>
-            <th>
+                <th class="bg-dark text-light text-start">
                 @Html.DisplayNameFor(model => model.DateSubmitted)
             </th>
-            <th>
+            <th class="bg-dark text-light text-start">
                 @Html.DisplayNameFor(model => model.Status)
             </th>
-            <th>
+            <th class="bg-dark text-light text-start">
                 @Html.DisplayNameFor(model => model.MatchedLostItem)
             </th>
+                <th class="bg-dark text-light text-end"> Actions</th>
             <th></th>
         </tr>
     </thead>
@@ -102,10 +100,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.MatchedLostItem.ItemName)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ClaimID"class="btn btn-light">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ClaimID" class="btn btn-light">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ClaimID" class="btn btn-danger">Delete</a>
+                    <td class="text-end ">
+                        <a asp-action="Edit" asp-route-id="@item.ClaimID" class="btn btn-light btn-lg">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ClaimID" class="btn btn-light btn-lg">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ClaimID" class="btn btn-danger btn-lg">Delete</a>
             </td>
         </tr>
 }
@@ -177,3 +175,4 @@
 
     </ul>
 </nav>
+</div>

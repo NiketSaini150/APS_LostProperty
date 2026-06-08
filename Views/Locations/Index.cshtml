@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-<div class="mx-auto" style=" width:95rem">
+<div class="mx-auto" style=" width:70%">
 <h1>Locations</h1>
 
 <!-- Search Form -->
@@ -37,8 +37,8 @@
                 </td>
                 <td class="text-end ">
                     <div class="btn-group" role="group" aria-label="Actions ">
-                        <a asp-action="Edit" asp-route-id="@item.LocationID" class="btn btn-light btn-lg">Edit</a>
-                        <a asp-action="Details" asp-route-id="@item.LocationID" class="btn btn-light btn-lg">Details</a>
+                        <a asp-action="Edit" asp-route-id="@item.LocationID" class="btn btn-light btn-lg">Edit</a>|
+                        <a asp-action="Details" asp-route-id="@item.LocationID" class="btn btn-light btn-lg">Details</a>|
                         <a asp-action="Delete" asp-route-id="@item.LocationID" class="btn btn-danger btn-lg">Delete</a>
                     </div>
                 </td>
