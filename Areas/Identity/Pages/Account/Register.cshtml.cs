@@ -113,8 +113,13 @@ namespace APS_LostProperty.Areas.Identity.Pages.Account
 
             public string LastName { get; set; }
             [Display (Name = "Date Subbmited")]
+
             public DateTime DateRegistered { get; set; } = DateTime.Now;
 
+
+            [Display(Name = "Phone Number")]
+            [RegularExpression("[0-9]")]
+            public string? Phonenumber { get; set; }
             public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
             {
                 var today = DateTime.Now;

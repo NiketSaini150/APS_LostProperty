@@ -12,13 +12,6 @@
     <link rel="stylesheet" href="~/APS_LostProperty.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <!-- background image 
-        courassel photo slideshow 
-        cursor spy 
-    -->
-   
-
-
     <header>
         <!-- Navbar -->
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark rounded fixed-top">
@@ -46,39 +39,26 @@
 
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active border border-primary rounded" : "")"
-                                   asp-controller="Home"
-                                   asp-action="Index">
-                                Home
+                            <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active border border-primary rounded" : "")"  asp-controller="Home"  asp-action="Index">Home
                             </a>
                         </li>
                         @* STAFF ONLY LINKS *@
                         @if (User.IsInRole("Staff"))
                         {
-                            <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Categories" ? "active border border-primary rounded" : "")"
-                            asp-controller="Categories" asp-action="Index">Categories</a>
+                            <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Categories" ? "active border border-primary rounded" : "")"  asp-controller="Categories" asp-action="Index">Categories</a>
 
                             <li class="nav-item">
-                                <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Locations" ? "active border border-primary rounded" : "")"
-                                       asp-controller="Locations"
-                                       asp-action="Index">
-                                    Locations
+                                <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Locations" ? "active border border-primary rounded" : "")"  asp-controller="Locations"  asp-action="Index">Locations
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "LostItems" ? "active border border-primary rounded" : "")"
-                                       asp-controller="LostItems"
-                                       asp-action="Index">
-                                    Lost Items
+                                <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "LostItems" ? "active border border-primary rounded" : "")"   asp-controller="LostItems"    asp-action="Index">Lost Items
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Admin" ? "active border border-primary rounded" : "")"
-                                       asp-controller="Admin"
-                                       asp-action="Index">
-                                    Admin
+                                <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Admin" ? "active border border-primary rounded" : "")" asp-controller="Admin" asp-action="Index">Admin
                                 </a>
                             </li>
                         }
@@ -87,10 +67,7 @@
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Claims" ? "active border border-primary rounded" : "")"
-                                       asp-controller="Claims"
-                                       asp-action="Index">
-                                    Claims
+                                <a class="nav-link text-light @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Claims" ? "active border border-primary rounded" : "")"  asp-controller="Claims" asp-action="Index">Claims
                                 </a>
                             </li>
                         }

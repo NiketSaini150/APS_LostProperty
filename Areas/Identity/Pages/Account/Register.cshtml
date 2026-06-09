@@ -43,6 +43,12 @@
                 <label asp-for="Input.LastName">Last Name </label>
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
                 </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Phonenumber" class="form-control" />
+                <label asp-for="Input.Phonenumber">Phone Number </label>
+                <span asp-validation-for="Input.Phonenumber" class="text-danger"></span>
+            </div>
          
 
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
