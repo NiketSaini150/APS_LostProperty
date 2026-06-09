@@ -118,7 +118,8 @@ namespace APS_LostProperty.Areas.Identity.Pages.Account
 
 
             [Display(Name = "Phone Number")]
-            [RegularExpression("[0-9]")]
+            [StringLength(10)]
+            [RegularExpression("[0-9] ")]
             public string? Phonenumber { get; set; }
             public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
             {
