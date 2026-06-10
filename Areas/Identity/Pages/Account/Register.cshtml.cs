@@ -119,8 +119,9 @@ namespace APS_LostProperty.Areas.Identity.Pages.Account
 
             [Display(Name = "Phone Number")]
             [StringLength(10)]
-            [RegularExpression("[0-9] ")]
-            public string? Phonenumber { get; set; }
+            [RegularExpression(@"^\d{10}$", ErrorMessage = "Phone number must be exactly 10 digits.")]
+            public string? PhoneNumber { get; set; }
+           
             public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
             {
                 var today = DateTime.Now;
@@ -128,7 +129,7 @@ namespace APS_LostProperty.Areas.Identity.Pages.Account
                 if (DateRegistered <= today)
                 {
                     yield return new ValidationResult(
-                        "Estimated Time Of Arrival cannot be in the past.",
+                        "Date registered can not be in the past.",
                         new[] { nameof(DateRegistered) }
                     );
                 }
@@ -166,6 +167,7 @@ namespace APS_LostProperty.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.DateRegistered = Input.DateRegistered;
+                user.PhoneNumber = Input.PhoneNumber;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

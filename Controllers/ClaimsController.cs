@@ -187,23 +187,32 @@ namespace APS_LostProperty.Controllers
                 _context.Add(claim);
                 await _context.SaveChangesAsync();
 
-               
-                    if (!string.IsNullOrEmpty(claim.UserID))
-                    {
-                        var user = await _userManager.FindByIdAsync(claim.UserID);
 
-                        if (user?.Email != null)
-                        {
-                            await _emailSender.SendEmailAsync(
-                                user.Email,
-                                "Claim Submitted",
-                                $"Hi {user.UserName},\n\n" +
-                                $"Your claim for '{claim.ClaimedItemName}' has been SUBMITTED successfully.\n\n" +
-                                "Our staff will now review your claim.\n\n" +
-                                "APS Lost Property Team"
-                            );
-                        }
+                if (!string.IsNullOrEmpty(claim.UserID))
+                {
+                    var user = await _userManager.FindByIdAsync(claim.UserID);
+
+                    if (user?.Email != null)
+                    {
+
+                        await _emailSender.SendEmailAsync(
+                            user.Email,
+                            "Claim Submitted - " + claim.ClaimedItemName,
+                            $"Dear {user.UserName},\n\n" +
+                            $"Thank you for submitting a claim for '{claim.ClaimedItemName}'.\n\n" +
+                            "Your claim has been received and is currently being reviewed by the APS Lost Property Team.\n\n" +
+                            "We will contact you once a decision has been made regarding your claim. Additional information may be requested if required.\n\n" +
+                            "Thank you for using the APS Lost Property System.\n\n" +
+                            "Kind regards,\n" +
+                            "APS Lost Property Team"
+                        );
                     }
+
+                }
+
+            
+        
+    
 
                  
 
@@ -217,9 +226,10 @@ namespace APS_LostProperty.Controllers
         // GET: Edit
         // loads edit page for a specific claim
         [HttpGet]
-        [Authorize(Roles = "Staff")]
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
+       
             // if no id provided, return error
             if (id == null) return NotFound();
 
@@ -232,6 +242,13 @@ namespace APS_LostProperty.Controllers
             // if claim doesn't exist
             if (claim == null)
                 return NotFound();
+
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!User.IsInRole("Staff") && claim.UserID != currentUserId)
+            {
+                return Forbid();
+            }
 
             // load dropdown of lost items (sorted alphabetically)
             ViewData["MatchedLostItemID"] = new SelectList(
@@ -251,7 +268,7 @@ namespace APS_LostProperty.Controllers
         // saves updated claim data
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Staff")]
+        [Authorize]
         public async Task<IActionResult> Edit(int id,
          [Bind("ClaimID,ClaimedItemName,ClaimedDescription,DateLost,MatchedLostItemID,Status")]
     APS_LostProperty.Models.Claim claim)
@@ -265,6 +282,13 @@ namespace APS_LostProperty.Controllers
 
             if (existing == null)
                 return NotFound();
+
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!User.IsInRole("Staff") && existing.UserID != currentUserId)
+            {
+                return Forbid();
+            }
 
             var oldStatus = existing.Status;
             var oldLostItemId = existing.MatchedLostItemID;
@@ -282,14 +306,17 @@ namespace APS_LostProperty.Controllers
 
             if (ModelState.IsValid)
             {
-                // update fields
                 existing.ClaimedItemName = claim.ClaimedItemName;
                 existing.ClaimedDescription = claim.ClaimedDescription;
                 existing.DateLost = claim.DateLost;
-                existing.MatchedLostItemID = claim.MatchedLostItemID;
-                existing.Status = claim.Status;
 
-               
+                if (User.IsInRole("Staff"))
+                {
+                    existing.MatchedLostItemID = claim.MatchedLostItemID;
+                    existing.Status = claim.Status;
+                }
+
+
                 if (oldLostItemId != null && oldLostItemId != existing.MatchedLostItemID)
                 {
                     var oldItem = await _context.LostItem
@@ -323,12 +350,14 @@ namespace APS_LostProperty.Controllers
                     if (user?.Email != null)
                     {
                         await _emailSender.SendEmailAsync(
-                            user.Email,
-                            "Claim Update: " + claim.ClaimedItemName,
-                            $"Dear {user.UserName},\n\n" +
-                            $"Your claim for '{existing.ClaimedItemName}' has been APPROVED.\n\n" +
-                            "You can now collect your item.\n\n" +
-                            "APS Lost Property Team"
+                        user.Email,
+                      "Claim Approved - " + claim.ClaimedItemName,$"Dear {user.UserName},\n\n" +$"We are pleased to inform you that your claim for '{existing.ClaimedItemName}' has been approved.\n\n" +
+                      "Your item is now ready for collection from the College Shop.\n\n" +
+                      "Please bring a form of identification when collecting your item.\n\n" +
+                      "If you have any questions, please contact the APS Lost Property Team.\n\n" +
+                      "Kind regards,\n" +
+                      "APS Lost Property Team"
+
                         );
                     }
                 }
@@ -339,10 +368,15 @@ namespace APS_LostProperty.Controllers
                 {
                     await _emailSender.SendEmailAsync(
                         existing.IdentityUser.Email,
-                        "Claim Rejected",
-                        $"Hi {existing.IdentityUser.UserName},\n\n" +
-                        $"Your claim for '{existing.ClaimedItemName}' has been REJECTED.\n\n" +
+                        "Claim Rejected - " + existing.ClaimedItemName,
+                        $"Dear {existing.IdentityUser.UserName},\n\n" +
+                        $"Unfortunately, your claim for '{existing.ClaimedItemName}' has not been approved.\n\n" +
+                        "This may be because the information provided did not match the item or additional verification was required.\n\n" +
+                        "If you believe this decision was made in error, please contact the APS Lost Property Team for further assistance.\n\n" +
+                        "Kind regards,\n" +
                         "APS Lost Property Team"
+
+
                     );
                 }
 
@@ -362,7 +396,7 @@ namespace APS_LostProperty.Controllers
         // GET: Delete
         // shows confirmation page before deleting claim
         [HttpGet]
-        [Authorize(Roles = "Staff")]
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -377,6 +411,12 @@ namespace APS_LostProperty.Controllers
             if (claim == null)
                 return NotFound();
 
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!User.IsInRole("Staff") && claim.UserID != currentUserId)
+            {
+                return Forbid();
+            }
             return View(claim);
         }
 
@@ -384,7 +424,7 @@ namespace APS_LostProperty.Controllers
         // permanently removes claim from database
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Staff")]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var claim = await _context.Claim
@@ -393,6 +433,12 @@ namespace APS_LostProperty.Controllers
      .FirstOrDefaultAsync(c => c.ClaimID == id);
             if (claim != null)
             {
+                var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (!User.IsInRole("Staff") && claim.UserID != currentUserId)
+                {
+                    return Forbid();
+                }
                 _context.Claim.Remove(claim);
                 await _context.SaveChangesAsync();
             }
