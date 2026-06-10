@@ -39,7 +39,9 @@ namespace APS_LostProperty.Controllers
         // this loads the main claims page (list view)
         // also supports search + pagination
         [HttpGet]
-        public async Task<IActionResult> Index(string searchString, int page = 1)
+
+        
+        public async Task<IActionResult> Index(string searchString, string statusFilter, int page = 1)
         {
             // how many items we want per page (pagination size)
             int pageSize = 10;
@@ -57,6 +59,27 @@ namespace APS_LostProperty.Controllers
             if (!User.IsInRole("Staff"))
             {
                 claimsQuery = claimsQuery.Where(c => c.UserID == userId);
+            }
+
+            if (!string.IsNullOrEmpty(statusFilter))
+            {
+                switch (statusFilter.ToLower())
+                {
+                    case "submitted":
+                        claimsQuery = claimsQuery.Where(c => c.Status == ClaimStatus.Submitted);
+                        break;
+                    case "approved":
+                        claimsQuery = claimsQuery.Where(c => c.Status == ClaimStatus.Approved);
+                        break;
+                    case "collected":
+                        claimsQuery = claimsQuery.Where(c => c.Status == ClaimStatus.Collected);
+                        break;
+                    case "rejected":
+                        claimsQuery = claimsQuery.Where(c => c.Status == ClaimStatus.Rejected);
+                        break;
+                    default:
+                        break;
+                }
             }
             // ---------------- SEARCH SECTION ----------------
 
@@ -82,17 +105,11 @@ namespace APS_LostProperty.Controllers
                 );
             }
 
-            // sort results so better matches appear first
-            // here we try to push "starts with" matches to the top
+            // Order by submitted date descending so newest claims appear first
+            // then fallback to username for stable ordering
             claimsQuery = claimsQuery
-    .OrderBy(c =>
-        !string.IsNullOrEmpty(searchString) &&
-        c.IdentityUser != null &&
-        c.IdentityUser.UserName != null &&
-        c.IdentityUser.UserName.StartsWith(searchString)
-            ? 0 : 1
-    )
-   .ThenBy(c => c.IdentityUser != null ? c.IdentityUser.UserName : "");
+                .OrderByDescending(c => c.DateSubmitted)
+                .ThenBy(c => c.IdentityUser != null ? c.IdentityUser.UserName : "");
 
             // ---------------- PAGINATION SECTION ----------------
 
@@ -108,8 +125,10 @@ namespace APS_LostProperty.Controllers
                 .Take(pageSize)                // take only this page's items
                 .ToListAsync();                // run query and convert to list
 
-            // send current page number to the view
+            // send current page number and filters to the view
             ViewData["CurrentPage"] = page;
+            ViewBag.SearchString = searchString;
+            ViewBag.StatusFilter = statusFilter;
 
             // send total pages so UI can build page buttons
             ViewData["TotalPages"] = totalPages;
@@ -120,6 +139,7 @@ namespace APS_LostProperty.Controllers
             // return final filtered + paginated list to view
             return View(claims);
         }
+      
         // GET: Claims/Details/5
         [HttpGet]
         public async Task<IActionResult> Details(int? id)

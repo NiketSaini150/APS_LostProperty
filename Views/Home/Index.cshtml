@@ -125,8 +125,9 @@
                            </div>
                            <h5 class="card-title mt-2"> Total Claims Made</h5>
                                 @if (User.Identity != null && User.Identity.IsAuthenticated){
+                            var hasPending = (ViewBag.PendingClaims ?? 0) as int? > 0;
                             <a asp-controller="Claims" asp-action="Index"
-                               class="btn btn-primary w-75 mt-auto">
+                               class="btn @(hasPending ? "btn-danger" : "btn-primary") w-75 mt-auto">
                                 View Claims
                             </a>
                                 }
