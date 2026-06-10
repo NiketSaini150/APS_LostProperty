@@ -122,28 +122,7 @@ namespace APS_LostProperty.Areas.Identity.Pages.Account
             [RegularExpression(@"^\d{10}$", ErrorMessage = "Phone number must be exactly 10 digits.")]
             public string? PhoneNumber { get; set; }
            
-            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-            {
-                var today = DateTime.Now;
-
-                if (DateRegistered <= today)
-                {
-                    yield return new ValidationResult(
-                        "Date registered can not be in the past.",
-                        new[] { nameof(DateRegistered) }
-                    );
-                }
-                else
-                {
-                    if (DateRegistered >= today)
-                    {
-                        yield return new ValidationResult(
-                                           "Date registered cannot be in the future.",
-                                           new[] { nameof(DateRegistered) }
-                                       );
-                    }
-                }
-            }
+        
 
         }
 
