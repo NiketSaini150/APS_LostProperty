@@ -124,11 +124,9 @@
                                 @(ViewBag.TotalClaims ?? 0)
                            </div>
                            <h5 class="card-title mt-2"> Total Claims Made</h5>
-                                @if (User.Identity != null && User.Identity.IsAuthenticated){
-                            var hasPending = (ViewBag.PendingClaims ?? 0) as int? > 0;
-                            <a asp-controller="Claims" asp-action="Index"
-                               class="btn @(hasPending ? "btn-danger" : "btn-primary") w-75 mt-auto">
-                                View Claims
+                                @if (User.Identity != null && User.Identity.IsAuthenticated){   var hasPending = (ViewBag.PendingClaims ?? 0) as int? > 5;   <a asp-controller="Claims" asp-action="Index" asp-route-status ="Submitted"
+                               class="btn @(hasPending ? "btn-danger" : "btn-primary") w-75 mt-auto"> You Have @ViewBag.PendingClaims
+                                Claims That Need Attending To 
                             </a>
                                 }
                        </div>
@@ -143,9 +141,7 @@
                             </div>
                             <h5 class="card-title mt-2"> Total Claims Claimed</h5>
                                 @if (User.IsInRole("Staff")){
-                            <a asp-controller="LostItems" asp-action="Index"
-                               class="btn btn-primary w-75 mt-auto">
-                                View Claimed Items
+                            <a asp-controller="LostItems" asp-action="Index"  class="btn btn-primary w-75 mt-auto">  View Claimed Items
                             </a>
                                 }
                         </div>

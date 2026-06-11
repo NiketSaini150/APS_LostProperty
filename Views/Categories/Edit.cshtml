@@ -1,36 +1,45 @@
 ﻿@model APS_LostProperty.Models.Category
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Category";
 }
-<div class="mx-auto fs-2" style="width:80%">
-<h1>Edit</h1>
 
-<h4>Category</h4>
-<hr />
-<div class="mx-auto" style="width:70%">
-<div class="row" style="align-content">
-    <div class="col-md">
+
+<div class=" card  shadow-sm p-4 mx-auto container pt-5 d-flex justify-content-center align-items-center" style="max-width: 80vh;">
+    <div style="height: 80vH;">
+       
+    
+         <div class="card-body mt-5">
+
+        <h2 class="text-center mb-3 fs-2">Edit Category</h2>
+        <hr />
+
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="width: 70vh"></div>
+
             <input type="hidden" asp-for="CategoryID" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger btn-lg"></span>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control form-control-lg" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-light btn-lg" />
+
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">
+                    Back to List
+                </a>
+
+                <input type="submit" value="Save Changes" class="btn btn-primary" />
             </div>
         </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index" class="btn btn-secondary btn-lg">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
-</div>
