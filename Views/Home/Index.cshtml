@@ -54,7 +54,7 @@
                                  alt="Avondale College">
                         </div>
 
-                        <div class="carousel-item" style="height:100 %;">
+                        <div class="carousel-item" style="height:100%;">
                             <img src="~/Img/pexels-adam-sondel-381265-1466609 (1).jpg"
                                  class="d-block w-100"
                                  style="height:100%; object-fit:cover;"
@@ -123,6 +123,7 @@
                                 @(ViewBag.TotalClaims ?? 0)
                            </div>
                            <h5 class="card-title mt-2"> Total Claims Made</h5>
+                                @if (User.Identity != null && User.Identity.IsAuthenticated){
                             <a asp-controller="Claims" asp-action="Index"
                                class="btn btn-primary w-75 mt-auto">
                                 View Claims
@@ -138,9 +139,10 @@
                                 @(ViewBag.ClaimedClaims ?? 0)
                             </div>
                             <h5 class="card-title mt-2"> Total Claims Claimed</h5>
+                                @if (User.IsInRole("Staff")){
                             <a asp-controller="LostItems" asp-action="Index"
                                class="btn btn-primary w-75 mt-auto">
-                                View Claims Claimed 
+                                View Claimed Items
                             </a>
                         </div>
                     </div>

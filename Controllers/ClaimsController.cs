@@ -39,7 +39,9 @@ namespace APS_LostProperty.Controllers
         // this loads the main claims page (list view)
         // also supports search + pagination
         [HttpGet]
-        public async Task<IActionResult> Index(string searchString, int page = 1)
+
+        
+        public async Task<IActionResult> Index(string searchString, string statusFilter, int page = 1)
         {
             // how many items we want per page (pagination size)
             int pageSize = 10;
@@ -57,6 +59,27 @@ namespace APS_LostProperty.Controllers
             if (!User.IsInRole("Staff"))
             {
                 claimsQuery = claimsQuery.Where(c => c.UserID == userId);
+            }
+
+            if (!string.IsNullOrEmpty(statusFilter))
+            {
+                switch (statusFilter.ToLower())
+                {
+                    case "submitted":
+                        claimsQuery = claimsQuery.Where(c => c.Status == ClaimStatus.Submitted);
+                        break;
+                    case "approved":
+                        claimsQuery = claimsQuery.Where(c => c.Status == ClaimStatus.Approved);
+                        break;
+                    case "collected":
+                        claimsQuery = claimsQuery.Where(c => c.Status == ClaimStatus.Collected);
+                        break;
+                    case "rejected":
+                        claimsQuery = claimsQuery.Where(c => c.Status == ClaimStatus.Rejected);
+                        break;
+                    default:
+                        break;
+                }
             }
             // ---------------- SEARCH SECTION ----------------
 
@@ -82,17 +105,11 @@ namespace APS_LostProperty.Controllers
                 );
             }
 
-            // sort results so better matches appear first
-            // here we try to push "starts with" matches to the top
+            // Order by submitted date descending so newest claims appear first
+            // then fallback to username for stable ordering
             claimsQuery = claimsQuery
-    .OrderBy(c =>
-        !string.IsNullOrEmpty(searchString) &&
-        c.IdentityUser != null &&
-        c.IdentityUser.UserName != null &&
-        c.IdentityUser.UserName.StartsWith(searchString)
-            ? 0 : 1
-    )
-   .ThenBy(c => c.IdentityUser != null ? c.IdentityUser.UserName : "");
+                .OrderByDescending(c => c.DateSubmitted)
+                .ThenBy(c => c.IdentityUser != null ? c.IdentityUser.UserName : "");
 
             // ---------------- PAGINATION SECTION ----------------
 
@@ -108,8 +125,10 @@ namespace APS_LostProperty.Controllers
                 .Take(pageSize)                // take only this page's items
                 .ToListAsync();                // run query and convert to list
 
-            // send current page number to the view
+            // send current page number and filters to the view
             ViewData["CurrentPage"] = page;
+            ViewBag.SearchString = searchString;
+            ViewBag.StatusFilter = statusFilter;
 
             // send total pages so UI can build page buttons
             ViewData["TotalPages"] = totalPages;
@@ -120,6 +139,7 @@ namespace APS_LostProperty.Controllers
             // return final filtered + paginated list to view
             return View(claims);
         }
+      
         // GET: Claims/Details/5
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
@@ -187,29 +207,40 @@ namespace APS_LostProperty.Controllers
                 _context.Add(claim);
                 await _context.SaveChangesAsync();
 
+                if (ModelState.IsValid)
+                {
+                    _context.Add(claim);
+                    await _context.SaveChangesAsync();
 
                
                     if (!string.IsNullOrEmpty(claim.UserID))
                     {
                         var user = await _userManager.FindByIdAsync(claim.UserID);
 
-                        if (user?.Email != null)
-                        {
-                            await _emailSender.SendEmailAsync(
-                                user.Email,
-                                "Claim Submitted",
-                                $"Hi {user.UserName},\n\n" +
-                                $"Your claim for '{claim.ClaimedItemName}' has been SUBMITTED successfully.\n\n" +
-                                "Our staff will now review your claim.\n\n" +
-                                "APS Lost Property Team"
-                            );
-                        }
+                    if (user?.Email != null)
+                    {
+
+                        await _emailSender.SendEmailAsync(
+                            user.Email,
+                            "Claim Submitted - " + claim.ClaimedItemName,
+                            $"Dear {user.UserName},\n\n" +
+                            $"Thank you for submitting a claim for '{claim.ClaimedItemName}'.\n\n" +
+                            "Your claim has been received and is currently being reviewed by the APS Lost Property Team.\n\n" +
+                            "We will contact you once a decision has been made regarding your claim. Additional information may be requested if required.\n\n" +
+                            "Thank you for using the APS Lost Property System.\n\n" +
+                            "Kind regards,\n" +
+                            "APS Lost Property Team"
+                        );
                     }
+
+                }
 
                     return RedirectToAction(nameof(Index));
                 }
 
-       
+                return RedirectToAction(nameof(Index));
+            }
+
             // if validation fails, reload page with errors
             return View(claim);
         }
@@ -217,9 +248,10 @@ namespace APS_LostProperty.Controllers
         // GET: Edit
         // loads edit page for a specific claim
         [HttpGet]
-        [Authorize(Roles = "Staff")]
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
+       
             // if no id provided, return error
             if (id == null) return NotFound();
 
@@ -232,6 +264,13 @@ namespace APS_LostProperty.Controllers
             // if claim doesn't exist
             if (claim == null)
                 return NotFound();
+
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!User.IsInRole("Staff") && claim.UserID != currentUserId)
+            {
+                return Forbid();
+            }
 
             // load dropdown of lost items (sorted alphabetically)
             ViewData["MatchedLostItemID"] = new SelectList(
@@ -251,7 +290,7 @@ namespace APS_LostProperty.Controllers
         // saves updated claim data
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Staff")]
+        [Authorize]
         public async Task<IActionResult> Edit(int id,
          [Bind("ClaimID,ClaimedItemName,ClaimedDescription,DateLost,MatchedLostItemID,Status")]
     APS_LostProperty.Models.Claim claim)
@@ -265,6 +304,13 @@ namespace APS_LostProperty.Controllers
 
             if (existing == null)
                 return NotFound();
+
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!User.IsInRole("Staff") && existing.UserID != currentUserId)
+            {
+                return Forbid();
+            }
 
             var oldStatus = existing.Status;
             var oldLostItemId = existing.MatchedLostItemID;
@@ -282,14 +328,17 @@ namespace APS_LostProperty.Controllers
 
             if (ModelState.IsValid)
             {
-                // update fields
                 existing.ClaimedItemName = claim.ClaimedItemName;
                 existing.ClaimedDescription = claim.ClaimedDescription;
                 existing.DateLost = claim.DateLost;
-                existing.MatchedLostItemID = claim.MatchedLostItemID;
-                existing.Status = claim.Status;
 
-               
+                if (User.IsInRole("Staff"))
+                {
+                    existing.MatchedLostItemID = claim.MatchedLostItemID;
+                    existing.Status = claim.Status;
+                }
+
+
                 if (oldLostItemId != null && oldLostItemId != existing.MatchedLostItemID)
                 {
                     var oldItem = await _context.LostItem
@@ -323,12 +372,14 @@ namespace APS_LostProperty.Controllers
                     if (user?.Email != null)
                     {
                         await _emailSender.SendEmailAsync(
-                            user.Email,
-                            "Claim Update: " + claim.ClaimedItemName,
-                            $"Dear {user.UserName},\n\n" +
-                            $"Your claim for '{existing.ClaimedItemName}' has been APPROVED.\n\n" +
-                            "You can now collect your item.\n\n" +
-                            "APS Lost Property Team"
+                        user.Email,
+                      "Claim Approved - " + claim.ClaimedItemName,$"Dear {user.UserName},\n\n" +$"We are pleased to inform you that your claim for '{existing.ClaimedItemName}' has been approved.\n\n" +
+                      "Your item is now ready for collection from the College Shop.\n\n" +
+                      "Please bring a form of identification when collecting your item.\n\n" +
+                      "If you have any questions, please contact the APS Lost Property Team.\n\n" +
+                      "Kind regards,\n" +
+                      "APS Lost Property Team"
+
                         );
                     }
                 }
@@ -339,10 +390,15 @@ namespace APS_LostProperty.Controllers
                 {
                     await _emailSender.SendEmailAsync(
                         existing.IdentityUser.Email,
-                        "Claim Rejected",
-                        $"Hi {existing.IdentityUser.UserName},\n\n" +
-                        $"Your claim for '{existing.ClaimedItemName}' has been REJECTED.\n\n" +
+                        "Claim Rejected - " + existing.ClaimedItemName,
+                        $"Dear {existing.IdentityUser.UserName},\n\n" +
+                        $"Unfortunately, your claim for '{existing.ClaimedItemName}' has not been approved.\n\n" +
+                        "This may be because the information provided did not match the item or additional verification was required.\n\n" +
+                        "If you believe this decision was made in error, please contact the APS Lost Property Team for further assistance.\n\n" +
+                        "Kind regards,\n" +
                         "APS Lost Property Team"
+
+
                     );
                 }
 
@@ -362,7 +418,7 @@ namespace APS_LostProperty.Controllers
         // GET: Delete
         // shows confirmation page before deleting claim
         [HttpGet]
-        [Authorize(Roles = "Staff")]
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -377,6 +433,12 @@ namespace APS_LostProperty.Controllers
             if (claim == null)
                 return NotFound();
 
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!User.IsInRole("Staff") && claim.UserID != currentUserId)
+            {
+                return Forbid();
+            }
             return View(claim);
         }
 
@@ -384,7 +446,7 @@ namespace APS_LostProperty.Controllers
         // permanently removes claim from database
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Staff")]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var claim = await _context.Claim
@@ -393,6 +455,12 @@ namespace APS_LostProperty.Controllers
      .FirstOrDefaultAsync(c => c.ClaimID == id);
             if (claim != null)
             {
+                var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (!User.IsInRole("Staff") && claim.UserID != currentUserId)
+                {
+                    return Forbid();
+                }
                 _context.Claim.Remove(claim);
                 await _context.SaveChangesAsync();
             }
