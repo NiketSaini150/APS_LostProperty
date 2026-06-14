@@ -202,11 +202,7 @@ namespace APS_LostProperty.Controllers
                 ModelState.AddModelError("DateLost", "Date Lost cannot be more than 3 months in the Past!");
 
             // if everything is valid, save to database
-            if (ModelState.IsValid)
-            {
-                _context.Add(claim);
-                await _context.SaveChangesAsync();
-
+           
                 if (ModelState.IsValid)
                 {
                     _context.Add(claim);
@@ -238,9 +234,8 @@ namespace APS_LostProperty.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                return RedirectToAction(nameof(Index));
-            }
-
+         
+            
             // if validation fails, reload page with errors
             return View(claim);
         }

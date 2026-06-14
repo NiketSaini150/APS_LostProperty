@@ -87,72 +87,81 @@
         </div>
 
     </div>
-      <div class="container py-5">
-            <div class="row justify-content-center g-4">        
-         
+        <div class="container py-5">
 
-        <!-- NAVIGATION CARD -->
-        
             <div class="row justify-content-center g-4">
+
+                <!-- TOTAL ITEMS -->
                 <div class="col-md-3 col-sm-6 d-flex">
-                   <div class="card d-flex border-secondary shadow-md rounded-3 text-center h-100 w-100 ">
-                       <div></div>
+                    <div class="card border-secondary shadow-md rounded-3 text-center h-100 w-100">
 
-                      <div class="card-body py-5 d-flex flex-column justify-content-center align-items-center">
-
-                       <div class="fs-1 fw-bold text-primary">
-                           @(ViewBag.TotalItems ?? 0)
-                       </div>
-
-                           <h5 class="card-title mt-2">Total Items</h5>
-
-                              <a asp-controller="LostItems" asp-action="Index"
-                                class="btn btn-primary w-75 mt-auto">
-                                      View Lost Items
-                              </a>
-                      </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-3 col-sm-6 d-flex">
-                    <div class="card d-flex border border-secondary shadow-md rounded-3 text-center h-200 w-100">
-
-                       <div class="card-body py-5 d-flex flex-column justify-content-center align-items-center">
-
-                           <div class="fs-1 fw-bold text-primary">
-                                @(ViewBag.TotalClaims ?? 0)
-                           </div>
-                           <h5 class="card-title mt-2"> Total Claims Made</h5>
-                                @if (User.Identity != null && User.Identity.IsAuthenticated){
-                            <a asp-controller="Claims" asp-action="Index"
-                               class="btn btn-primary w-75 mt-auto">
-                                View Claims
-                            </a>
-                       </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 col-sm-6 d-flex">
-                    <div class="card d-flex border border-secondary shadow-md rounded-3 text-center h-100 w-100">
                         <div class="card-body py-5 d-flex flex-column justify-content-center align-items-center">
+
                             <div class="fs-1 fw-bold text-primary">
-                                @(ViewBag.ClaimedClaims ?? 0)
+                                @(ViewBag.TotalItems ?? 0)
                             </div>
-                            <h5 class="card-title mt-2"> Total Claims Claimed</h5>
-                                @if (User.IsInRole("Staff")){
+
+                            <h5 class="card-title mt-2">Total Items</h5>
+
                             <a asp-controller="LostItems" asp-action="Index"
                                class="btn btn-primary w-75 mt-auto">
-                                View Claimed Items
+                                View Lost Items
                             </a>
+
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <!-- TOTAL CLAIMS -->
+                <div class="col-md-3 col-sm-6 d-flex">
+                    <div class="card border-secondary shadow-md rounded-3 text-center h-100 w-100">
+
+                        <div class="card-body py-5 d-flex flex-column justify-content-center align-items-center">
+
+                            <div class="fs-1 fw-bold text-primary">
+                                @(ViewBag.TotalClaims ?? 0)
+                            </div>
+
+                            <h5 class="card-title mt-2">Total Claims Made</h5>
+
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                <a asp-controller="Claims" asp-action="Index"
+                                   class="btn btn-primary w-75 mt-auto">
+                                    View Claims
+                                </a>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLAIMED ITEMS -->
+                <div class="col-md-3 col-sm-6 d-flex">
+                    <div class="card border-secondary shadow-md rounded-3 text-center h-100 w-100">
+
+                        <div class="card-body py-5 d-flex flex-column justify-content-center align-items-center">
+
+                            <div class="fs-1 fw-bold text-primary">
+                                @(ViewBag.ClaimedClaims ?? 0)
+                            </div>
+
+                            <h5 class="card-title mt-2">Total Claimed Items</h5>
+
+                            @if (User.IsInRole("Staff"))
+                            {
+                                <a asp-controller="LostItems" asp-action="Index"
+                                   class="btn btn-primary w-75 mt-auto">
+                                    View Claimed Items
+                                </a>
+                            }
+
+                        </div>
+                    </div>
+                </div>
 
             </div>
-       </div>
-             
-       
+        </div>
 
         <!-- HOW IT WORKS CARD -->
         <div class="card bg-white d-flex border border-secondary border-opacity-25 shadow-sm rounded-3 mt-3">
