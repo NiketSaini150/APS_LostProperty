@@ -30,7 +30,7 @@ namespace APS_LostProperty.Areas.Identity.Data
         [DataType(DataType.Date)]
         public DateTime DateRegistered { get; set; } = DateTime.Now; // The date the user registered in the system
 
-
+     
         // Navigation property linking this user to their submitted claims
         // This allows querying all claims associated with this user
         public ICollection<Claim>? Claims { get; set; }

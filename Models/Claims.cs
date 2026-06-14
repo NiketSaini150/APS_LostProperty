@@ -88,11 +88,7 @@ namespace APS_LostProperty.Models
         public LostItem? MatchedLostItem { get; set; }
 
 
-        // Custom validation method used for DateLost
-        // This method checks that:
-        // 1. The date cannot be in the future
-        // 2. The date cannot be more than 1 year old
-       
+        
 
 
     }

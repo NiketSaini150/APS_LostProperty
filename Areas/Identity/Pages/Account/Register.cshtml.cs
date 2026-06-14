@@ -113,30 +113,16 @@ namespace APS_LostProperty.Areas.Identity.Pages.Account
 
             public string LastName { get; set; }
             [Display (Name = "Date Subbmited")]
+
             public DateTime DateRegistered { get; set; } = DateTime.Now;
 
-            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-            {
-                var today = DateTime.Now;
 
-                if (DateRegistered <= today)
-                {
-                    yield return new ValidationResult(
-                        "Estimated Time Of Arrival cannot be in the past.",
-                        new[] { nameof(DateRegistered) }
-                    );
-                }
-                else
-                {
-                    if (DateRegistered >= today)
-                    {
-                        yield return new ValidationResult(
-                                           "Date registered cannot be in the future.",
-                                           new[] { nameof(DateRegistered) }
-                                       );
-                    }
-                }
-            }
+            [Display(Name = "Phone Number")]
+            [StringLength(10)]
+            [RegularExpression(@"^\d{10}$", ErrorMessage = "Phone number must be exactly 10 digits.")]
+            public string? PhoneNumber { get; set; }
+           
+        
 
         }
 
@@ -160,6 +146,7 @@ namespace APS_LostProperty.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.DateRegistered = Input.DateRegistered;
+                user.PhoneNumber = Input.PhoneNumber;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

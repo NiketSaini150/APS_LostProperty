@@ -55,12 +55,10 @@ namespace APS_LostProperty.Controllers
 
             // ---------------- SORTING ----------------
 
-            // sorts results so matching/starting letters appear first
+            // Order by DateFound descending so the latest found items appear first
             lostItemsQuery = lostItemsQuery
-                .OrderBy(l =>
-                    l.ItemName.StartsWith(searchString) ? 0 : 1 // prioritise matches
-                )
-                .ThenBy(l => l.ItemName); // then sort alphabetically
+                .OrderByDescending(l => l.DateFound)
+                .ThenBy(l => l.ItemName); // stable fallback ordering
 
             // store search value so it stays in textbox after refresh
             ViewData["CurrentFilter"] = searchString;

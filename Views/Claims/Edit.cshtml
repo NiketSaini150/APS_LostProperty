@@ -1,9 +1,9 @@
 ﻿@model APS_LostProperty.Models.Claim
 
 @{
-    ViewData["Title"] = "Edit"; // Sets the title of the page
+    ViewData["Title"] = "Edit";
 }
-
+<div class="mx-auto fs-2" style="width:80%">
 <h1>Edit Claim</h1>
 
 <h4>Claim</h4>
@@ -11,80 +11,73 @@
 
 <div class="row">
     <div class="col-md-4">
-        <!-- Form to edit a claim -->
-        <!-- asp-action="Edit" means the form will POST to ClaimsController.Edit -->
+
         <form asp-action="Edit" method="post">
 
-            <!-- Validation summary: shows all model errors not tied to a specific field -->
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- Hidden field to store ClaimID -->
-            <!-- Required so that the POST knows which claim to update -->
             <input type="hidden" asp-for="ClaimID" />
 
-            <!-- Item Name -->
             <div class="form-group">
                 <label asp-for="ClaimedItemName" class="control-label"></label>
-                <!-- Input box bound to ItemName property -->
                 <input asp-for="ClaimedItemName" class="form-control" />
-                <!-- Displays validation message for ItemName -->
                 <span asp-validation-for="ClaimedItemName" class="text-danger"></span>
             </div>
 
-            <!-- Description -->
             <div class="form-group">
                 <label asp-for="ClaimedDescription" class="control-label"></label>
                 <input asp-for="ClaimedDescription" class="form-control" />
                 <span asp-validation-for="ClaimedDescription" class="text-danger"></span>
             </div>
 
-            <!-- Date Lost -->
             <div class="form-group">
                 <label asp-for="DateLost" class="control-label"></label>
-                <!-- Date input; bound to DateLost property -->
                 <input asp-for="DateLost" class="form-control" type="date" />
                 <span asp-validation-for="DateLost" class="text-danger"></span>
             </div>
 
-            <!-- Status Dropdown -->
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <!-- Dropdown bound to Status property using the enum ClaimStatus -->
-                <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<APS_LostProperty.Models.ClaimStatus>()"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
+            @if (User.IsInRole("Staff"))
+            {
+                <div class="form-group">
+                    <label asp-for="Status" class="control-label"></label>
+                    <select asp-for="Status"
+                            class="form-control"
+                            asp-items="Html.GetEnumSelectList<APS_LostProperty.Models.ClaimStatus>()">
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+            }
+            @if (User.IsInRole("Staff"))
+            {
+                <div class="form-group">
+                    <label asp-for="MatchedLostItemID" class="control-label"></label>
 
-            <!-- Matched Lost Item Dropdown -->
-            <div class="form-group">
-                <label asp-for="MatchedLostItemID" class="control-label"></label>
+                    <select asp-for="MatchedLostItemID"
+                            class="form-control"
+                            asp-items="ViewBag.MatchedLostItemID">
 
-                <select asp-for="MatchedLostItemID"
-                        class="form-control"
-                        asp-items="ViewBag.MatchedLostItemID">
+                        <option value="">-- No Matching Item --</option>
 
-                    <option value="">-- No Matching Item --</option>
+                    </select>
 
-                </select>
+                    <span asp-validation-for="MatchedLostItemID" class="text-danger"></span>
+                </div>
+            }
 
-                <span asp-validation-for="MatchedLostItemID" class="text-danger"></span>
-            </div>
-
-            <!-- Submit button -->
             <div class="form-group mt-2">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary btn-lg" />
             </div>
         </form>
     </div>
 </div>
 
-<!-- Link to go back to the Index page -->
 <div class="mt-3">
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary btn-md">Back to List</a>
 </div>
 
 @section Scripts {
-    <!-- Enables client-side validation scripts for unobtrusive validation -->
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+</div>
