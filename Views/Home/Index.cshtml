@@ -102,13 +102,14 @@
                             </div>
 
                             <h5 class="card-title mt-2">Total Items</h5>
-
-                            <a asp-controller="LostItems" asp-action="Index"
-                               class="btn btn-primary w-75 mt-auto">
-                                View Lost Items
-                            </a>
-
-                        </div>
+                            @if (User.IsInRole("Staff"))
+                                {
+                                    <a asp-controller="LostItems" asp-action="Index"
+                                    class="btn btn-primary w-75 mt-auto">
+                                        View Lost Items
+                                    </a>
+                                }
+                            </div>
                     </div>
                 </div>
 
