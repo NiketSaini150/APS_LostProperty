@@ -3,7 +3,11 @@
 @{
     ViewData["Title"] = "Details";
 }
+<div class=" card  shadow-sm fs-2 p-4 mx-auto container pt-5 d-flex justify-content-center align-items-center" style="max-width: 80vh;">
+    <div style="height: 80vH;">
 
+       
+        <div class="card-body mt-5">
 <h1>Details</h1>
 
 <div>
@@ -21,4 +25,7 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.LocationID" class="btn btn-light">Edit</a> |
     <a asp-action="Index" class="btn btn-primary">Back to List</a>
+</div>
+        </div>
+    </div>
 </div>
