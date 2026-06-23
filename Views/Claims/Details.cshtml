@@ -3,65 +3,81 @@
 @{
     ViewData["Title"] = "Details";
 }
-<div class=" card  shadow-sm fs-2 p-4 mx-auto container pt-5 d-flex justify-content-center align-items-center" style="max-width: 80vh;">
-    <div style="height: 80vH;">
 
-       
+<div class="card shadow-sm fs-3 p-4 mx-auto container pt-4"
+     style="max-width: 900px; width: 100%;">
+    <div>
+
         <div class="card-body mt-5">
-<h1>Details</h1>
 
-<div>
-    <h4>Claim</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            User Email
-        </dt>
-        <dd class="col-sm-10">
-            @Model.IdentityUser?.Email
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ClaimedItemName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ClaimedItemName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ClaimedDescription)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ClaimedDescription)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateLost)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateLost)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateSubmitted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateSubmitted)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MatchedLostItem)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MatchedLostItem.ItemName)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ClaimID" class="btn btn-light">Edit</a> |
-    <a asp-action="Index"class="btn btn-primary">Back to List</a>
-</div>
-</div>
+            <h1 class="text-center mb-3 fw-bold" style="font-size: 2.2rem;">
+                Claim Details
+            </h1>
+
+            <hr />
+
+            <dl class="row mb-4">
+
+                <dt class="col-sm-4 fw-semibold fs-4">User Email</dt>
+                <dd class="col-sm-8 fs-5">@Model.IdentityUser?.Email</dd>
+
+                <dt class="col-sm-4 fw-semibold fs-4">
+                    @Html.DisplayNameFor(model => model.ClaimedItemName)
+                </dt>
+                <dd class="col-sm-8 fs-5">
+                    @Html.DisplayFor(model => model.ClaimedItemName)
+                </dd>
+
+                <dt class="col-sm-4 fw-semibold fs-4">
+                    @Html.DisplayNameFor(model => model.ClaimedDescription)
+                </dt>
+                <dd class="col-sm-8 fs-5">
+                    @Html.DisplayFor(model => model.ClaimedDescription)
+                </dd>
+
+                <dt class="col-sm-4 fw-semibold fs-4">
+                    @Html.DisplayNameFor(model => model.DateLost)
+                </dt>
+                <dd class="col-sm-8 fs-5">
+                    @Html.DisplayFor(model => model.DateLost)
+                </dd>
+
+                <dt class="col-sm-4 fw-semibold fs-4">
+                    @Html.DisplayNameFor(model => model.DateSubmitted)
+                </dt>
+                <dd class="col-sm-8 fs-5">
+                    @Html.DisplayFor(model => model.DateSubmitted)
+                </dd>
+
+                <dt class="col-sm-4 fw-semibold fs-4">
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd class="col-sm-8 fs-5">
+                    @Html.DisplayFor(model => model.Status)
+                </dd>
+
+                <dt class="col-sm-4 fw-semibold fs-4">
+                    @Html.DisplayNameFor(model => model.MatchedLostItem)
+                </dt>
+                <dd class="col-sm-8 fs-5">
+                    @Html.DisplayFor(model => model.MatchedLostItem.ItemName)
+                </dd>
+
+            </dl>
+
+            <div class="d-flex gap-2">
+                <a asp-action="Index" class="btn btn-secondary">
+                    Back to List
+                </a>
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model?.ClaimID"
+                   class="btn btn-primary">
+                    Edit
+                </a>
+            </div>
+
+        </div>
+
     </div>
 </div>

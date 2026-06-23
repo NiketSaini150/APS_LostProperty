@@ -4,32 +4,37 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="card shadow-sm fs-2 p-4 mx-auto container pt-5 d-flex justify-content-center align-items-center" style="max-width: 80vh;">
-    <div style="height: 80vh; width: 100%;">
+<div class="card shadow-sm fs-3 p-4 mx-auto container pt-4"
+     style="max-width: 900px; width: 100%;">
+    <div>
 
-        <div class="card-body mt-5">
+        <div class="card-body">
 
-            <h2 class="text-center mb-3 fs-1">Category Details</h2>
+            <h1 class="text-center mb-3 fw-bold" style="font-size: 2.2rem;">
+                Category Details
+            </h1>
+
             <hr />
-             
-            <div class="mb-4 d-flex mx-auto  ">
-                <div class="fw-bold me-2 mb-0 ">
-                    @Html.DisplayNameFor(model => model.Name):
-                </div>
 
-                <div class=" offset-sm-1">
+            <dl class="row mb-4">
+
+                <dt class="col-sm-4 fw-semibold fs-4">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-8 fs-5">
                     @Html.DisplayFor(model => model.Name)
-                </div>
-            </div>
+                </dd>
 
-            <div class="d-flex ">
+            </dl>
+
+            <div class="d-flex gap-2">
                 <a asp-action="Index" class="btn btn-secondary">
-                    Back to List 
-                </a>|
+                    Back to List
+                </a>
 
                 <a asp-action="Edit"
                    asp-route-id="@Model?.CategoryID"
-                   class="btn btn-primary offset-sm-1">
+                   class="btn btn-primary">
                     Edit
                 </a>
             </div>

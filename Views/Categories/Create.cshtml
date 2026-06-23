@@ -4,30 +4,46 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<div class="card shadow-sm fs-3 p-4 mx-auto container pt-4"
+     style="max-width: 600px; width: 100%;">
+    <div>
 
-<h4>Category</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        <div class="card-body">
+
+            <h1 class="text-center mb-3 fw-bold text-success" style="font-size: 2.2rem;">
+                Create Category
+            </h1>
+
+            <hr />
+
+            <form asp-action="Create">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-semibold fs-4"></label>
+                    <input asp-for="Name" class="form-control form-control-md" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        Back to List
+                    </a>
+                    <input type="submit" value="Create" class="btn btn-success" />
+
+                 
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
 </div>
 
-<div>
-    <a asp-action="Index" class=" btn btn-primary">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

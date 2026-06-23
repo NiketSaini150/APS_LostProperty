@@ -31,4 +31,9 @@ body {
   text-align: start;
 
 
+
+}
+.table-responsive {
+    overflow-x: auto;
+    display: block;
 }

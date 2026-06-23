@@ -5,23 +5,23 @@
 }
 
 
-<div class=" card  shadow-sm fs-2 p-4 mx-auto container pt-5 d-flex justify-content-center align-items-center" style="max-width: 80vh;">
-    <div style="height: 80vH;">
-       
-    
-         <div class="card-body mt-5">
+<div class="card shadow-sm fs-3 p-4 mx-auto container pt-4"
+     style="max-width: 600px; width: 100%;">
 
-        <h2 class="text-center mb-3 fs-1">Edit Category</h2>
+   
+    <div class="card-body mt-5">
+        <h1 class="text-center mb-3 fs-2">Edit Category</h1>
         <hr />
 
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="width: 70vh"></div>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
             <input type="hidden" asp-for="CategoryID" />
 
             <div class="mb-3">
                 <label asp-for="Name" class="form-label"></label>
-                <input asp-for="Name" class="form-control form-control-lg" />
+                <input asp-for="Name" class="form-control form-control-md" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
@@ -32,14 +32,8 @@
 
                 <input type="submit" value="Save Changes" class="btn btn-primary" />
             </div>
+
         </form>
-        </div>
+
     </div>
 </div>
-</div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

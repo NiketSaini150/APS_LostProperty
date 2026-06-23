@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Index";
 }
-<div class="mx-auto" style=" width:70%">
+
+<div class="container-fluid container-lg mx-auto px-3">
 <h1>Locations</h1>
 
 <!-- Search Form -->
@@ -36,11 +37,11 @@
                     @Html.DisplayFor(modelItem => item.LocationName)
                 </td>
                 <td class="text-end ">
-                    <div class="btn-group" role="group" aria-label="Actions ">
-                        <a asp-action="Edit" asp-route-id="@item.LocationID" class="btn btn-light btn-lg">Edit</a>|
-                        <a asp-action="Details" asp-route-id="@item.LocationID" class="btn btn-light btn-lg">Details</a>|
-                        <a asp-action="Delete" asp-route-id="@item.LocationID" class="btn btn-danger btn-lg">Delete</a>
-                    </div>
+                    
+                        <a asp-action="Edit" asp-route-id="@item.LocationID" class="btn btn-light btn-md">Edit</a>|
+                        <a asp-action="Details" asp-route-id="@item.LocationID" class="btn btn-light btn-md">Details</a>|
+                        <a asp-action="Delete" asp-route-id="@item.LocationID" class="btn btn-danger btn-md">Delete</a>
+                    
                 </td>
             </tr>
         }

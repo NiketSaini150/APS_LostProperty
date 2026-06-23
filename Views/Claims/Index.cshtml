@@ -4,7 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="mx-auto" style="width:70%">
+
+<div class="container-fluid container-lg mx-auto px-3">
     <h1>Claims</h1>
 
     <form asp-action="Index" method="get" class="mb-4">
@@ -34,8 +35,8 @@
             <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
 
         </div>
-        
 
+        
     </form>
 
     <div class="row align-items-center mb-3">
@@ -48,82 +49,87 @@
         </div>
 
         <div class="col-md-4"></div>
-        
 
+        
     </div>
 
     
-    <table class="table fs-4 table-striped table-hover align-middle mb-0">
+    <div class="table-responsive">
 
-        <thead class="rounded-pill">
+        <table class="table fs-4 table-striped table-hover align-middle mb-0">
 
-            <tr>
-                <th class="bg-dark text-light text-start">
-                    @Html.DisplayNameFor(model => model.IdentityUser)
-                </th>
-                <th class="bg-dark text-light text-start">
-                    @Html.DisplayNameFor(model => model.ClaimedItemName)
-                </th>
-                <th class="bg-dark text-light text-start">
-                    @Html.DisplayNameFor(model => model.ClaimedDescription)
-                </th>
-                <th class="bg-dark text-light text-start">
-                    @Html.DisplayNameFor(model => model.DateLost)
-                </th>
-                <th class="bg-dark text-light text-start">
-                    @Html.DisplayNameFor(model => model.DateSubmitted)
-                </th>
-                <th class="bg-dark text-light text-start">
-                    @Html.DisplayNameFor(model => model.Status)
-                </th>
-                <th class="bg-dark text-light text-start">
-                    @Html.DisplayNameFor(model => model.MatchedLostItem)
-                </th>
-                <th class="bg-dark text-light text-end"> Actions</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            
+            <thead class="rounded-pill">
 
-            @foreach (var item in Model)
-            {
                 <tr>
+                    <th class="bg-dark text-light text-start">
+                        @Html.DisplayNameFor(model => model.IdentityUser)
+                    </th>
+                    <th class="bg-dark text-light text-start">
+                        @Html.DisplayNameFor(model => model.ClaimedItemName)
+                    </th>
+                    <th class="bg-dark text-light text-start">
+                        @Html.DisplayNameFor(model => model.ClaimedDescription)
+                    </th>
+                    <th class="bg-dark text-light text-start">
+                        @Html.DisplayNameFor(model => model.DateLost)
+                    </th>
+                    <th class="bg-dark text-light text-start">
+                        @Html.DisplayNameFor(model => model.DateSubmitted)
+                    </th>
+                    <th class="bg-dark text-light text-start">
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th class="bg-dark text-light text-start">
+                        @Html.DisplayNameFor(model => model.MatchedLostItem)
+                    </th>
+                    <th class="bg-dark text-light text-end"> Actions</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+            
+                @foreach (var item in Model)
+                {
+                    <tr>
 
                     
-                    <td>
-                        @Html.DisplayFor(model => item.IdentityUser.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ClaimedItemName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ClaimedDescription)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateLost)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateSubmitted)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MatchedLostItem.ItemName)
-                    </td>
-                    <td class="text-end ">
-                        <a asp-action="Edit" asp-route-id="@item.ClaimID" class="btn btn-light btn-lg">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ClaimID" class="btn btn-light btn-lg">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ClaimID" class="btn btn-danger btn-lg">Delete</a>
-                    </td>
-                </tr>
+                        <td>
+                            @Html.DisplayFor(model => item.IdentityUser.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClaimedItemName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClaimedDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateLost)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateSubmitted)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MatchedLostItem.ItemName)
+                        </td>
+                        <td  class="text-end" style="white-space: nowrap;">
+                           
+                            <a asp-action="Edit" asp-route-id="@item.ClaimID" class="btn btn-light btn-md">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.ClaimID" class="btn btn-light btn-md">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.ClaimID" class="btn btn-danger btn-md">Delete</a>
+                        </td>
+                    </tr>
 
 
-}
-        </tbody>
+                }
+            </tbody>
 
-    </table>
+        </table>
+
+    </div>
 
     <nav aria-label="Page navigation">
 
@@ -186,7 +192,7 @@
             }
 
         </ul>
-        
 
+        
     </nav>
 </div>

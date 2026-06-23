@@ -3,62 +3,69 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<div class="card shadow-sm fs-2 p-4 mx-auto container pt-5 d-flex justify-content-center align-items-center" style="max-width: 80vh;">
-    <div style="height: 80vh;">
+<div class="card shadow-sm fs-3 p-4 mx-auto container pt-4"
+     style="max-width: 600px; width: 100%;">
+    <div>
 
         <div class="card-body mt-5">
 
-            <h1 class=" text-center mb-3 fs-1">Edit</h1>
+            <h1 class="text-center mb-3 fs-2">Edit LostItem</h1>
 
-                <h4 class="text-center mb-3 fs-1">LostItem</h4>
-<hr />
+            <hr />
 
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="LostItemID" />
-                        <div class="mb-3">
-                <label asp-for="ItemName" class="control-label"></label>
-                    <input asp-for="ItemName" class="form-control  form-control-lg" />
-                <span asp-validation-for="ItemName" class="text-danger"></span>
-            </div>
-                        <div class="mb-3">
-                <label asp-for="Description" class="control-label"></label>
-                    <input asp-for="Description" class="form-control  form-control-lg" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-                        <div class="mb-3">
-                <label asp-for="DateFound" class="control-label"></label>
-                    <input asp-for="DateFound" class="form-control  form-control-lg" />
-                <span asp-validation-for="DateFound" class="text-danger"></span>
-            </div>
-                        <div class="mb-3">
-                <label asp-for="CategoryID" class="control-label"></label>
-                    <select asp-for="CategoryID" class="form-control  form-control-lg" asp-items="ViewBag.CategoryID"></select>
-                <span asp-validation-for="CategoryID" class="text-danger"></span>
-            </div>
-                        <div class="mb-3">
-                <label asp-for="LocationID" class="control-label"></label>
-                    <select asp-for="LocationID" class="form-control  form-control-lg" asp-items="ViewBag.LocationID"></select>
-                <span asp-validation-for="LocationID" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsClaimed" /> @Html.DisplayNameFor(model => model.IsClaimed)
-                </label>
-            </div>
+            <form asp-action="Edit">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <input type="hidden" asp-for="LostItemID" />
+
+                <div class="mb-3">
+                    <label asp-for="ItemName" class="form-label"></label>
+                    <input asp-for="ItemName" class="form-control form-control-md" />
+                    <span asp-validation-for="ItemName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <input asp-for="Description" class="form-control form-control-md" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="DateFound" class="form-label"></label>
+                    <input asp-for="DateFound" class="form-control form-control-md" />
+                    <span asp-validation-for="DateFound" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CategoryID" class="form-label"></label>
+                    <select asp-for="CategoryID" class="form-control form-control-md" asp-items="ViewBag.CategoryID"></select>
+                    <span asp-validation-for="CategoryID" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="LocationID" class="form-label"></label>
+                    <select asp-for="LocationID" class="form-control form-control-md" asp-items="ViewBag.LocationID"></select>
+                    <span asp-validation-for="LocationID" class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" asp-for="IsClaimed" />
+                    <label class="form-check-label">
+                        @Html.DisplayNameFor(model => model.IsClaimed)
+                    </label>
+                </div>
+
                 <div class="d-flex justify-content-between">
-                    <a asp-action="Index" class="btn btn-secondary btn-lg">
+                    <a asp-action="Index" class="btn btn-secondary">
                         Back to List
                     </a>
 
-                    <input type="submit" value="Save" class="btn btn-primary btn-lg" />
+                    <input type="submit" value="Save Changes" class="btn btn-primary" />
                 </div>
-        </form>
+
+            </form>
+
+        </div>
     </div>
 </div>
-
-
-</div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
