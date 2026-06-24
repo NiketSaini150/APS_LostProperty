@@ -5,15 +5,19 @@
     
     ViewData["Title"] = "Log in";
     }
- <div class="row">
 
-<div class="col-md-4 offset-md-4">
-<h1>@ViewData["Title"]</h1>
-</div>
- </div>
-<div class="row">
 
-    <div class="col-md-4 offset-md-4">
+    <div class="card shadow-sm p-4 mx-auto container pt-4"
+         style="max-width: 900px; width: 100%;">
+        <div class="card-body mt-5">
+
+            <h1 class="text-center mb-3 fw-bold" style="font-size: 2.2rem;">
+                @ViewData["Title"]
+            </h1>
+
+            <hr />
+
+         
         <section>
             <form id="account" method="post">
              
@@ -93,6 +97,7 @@
         </section>
     </div>
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
